@@ -8,13 +8,13 @@ import Slide from '../components/Slide';
 const LeftBar = () =>
 {
     return (
-        <Center>
+        <Box>
             <Flex flexDir="column" >
                 <Slide number={1}/>
                 <Slide number={2}/>
                 <Slide number={3}/>
             </Flex>
-        </Center>
+        </Box>
     )
 }
 
