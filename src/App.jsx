@@ -9,7 +9,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 function App() {
 
   return (
-    <Flex flexDir='column'>
+    <Flex margin={4}>
       <BrowserRouter>
         <Routes>
             <Route path="/app/presentation/:hash/edit" element={<EditPresentation/>} />
