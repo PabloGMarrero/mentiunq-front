@@ -1,6 +1,5 @@
 import { Flex, 
-    Square, 
-    Text, 
+    Square,
     Input, 
     InputGroup,
     InputLeftElement, 
@@ -12,10 +11,10 @@ import { Flex,
     Tr,
     Th,
     Td,
-    TableCaption,
     TableContainer, } from '@chakra-ui/react';
 
 import CustomButton from '../components/CustomButton';
+import TableRow from '../components/TableRow';
 import { HiPlus } from 'react-icons/hi'
 
 const MainContent = ()=> {
@@ -29,7 +28,7 @@ const MainContent = ()=> {
                             <CustomButton colorScheme={"messenger"} icon={HiPlus} text="New slide"/>
                             <CustomButton bg={"lightgray"} icon={HiPlus} text="New folder"/>
                         </Flex>
-                        <Flex justifyContent="right" flexDir={"row"} > 
+                        <Flex justifyContent="right" gap={"5px"} flexDir={"row"} > 
                             <InputGroup>
                                 <InputLeftElement pointerEvents='none'/>
                                 <Input placeholder='Tipeé algo para buscar' />
@@ -45,42 +44,20 @@ const MainContent = ()=> {
                 <Flex bg="white" w="95%" h={"95%"} m={"10px"} justifyContent="left" flexDir={"column"}>
                 <TableContainer>
                     <Table variant='simple'>
-                            <Thead>
-                                <Tr>
-                                    <Th>Nombre</Th>
-                                    <Th>Creador</Th>
-                                    <Th>Modificado</Th>
-                                    <Th>Creado</Th>
-                                </Tr>
-                            </Thead>
-                            <Tbody>
-                                <Tr>
-                                    <Td>inches</Td>
-                                    <Td>millimetres (mm)</Td>
-                                    <Td >25.4</Td>
-                                    <Td >25.4</Td>
-                                </Tr>
-                                <Tr>
-                                    <Td>feet</Td>
-                                    <Td>centimetres (cm)</Td>
-                                    <Td >30.48</Td>
-                                    <Td >25.4</Td>
-                                </Tr>
-                                <Tr>
-                                    <Td>yards</Td>
-                                    <Td>metres (m)</Td>
-                                    <Td >0.91444</Td>
-                                    <Td >25.4</Td>
-                                </Tr>
-                            </Tbody>
-                            <Tfoot>
-                                <Tr>
-                                    <Th>Nombre</Th>
-                                    <Th>Creador</Th>
-                                    <Th>Modificado</Th>
-                                    <Th>Creado</Th>
-                                </Tr>
-                            </Tfoot>
+                        <Thead>
+                            <Tr>
+                                <Th>Nombre</Th>
+                                <Th>Creador</Th>
+                                <Th>Modificado</Th>
+                                <Th>Creado</Th>
+                            </Tr>
+                        </Thead>
+                        <Tbody>
+                            <TableRow name={"Formulario 1"} creator={"Yo"} modified={"15-09-2022"} created={"14-09-2022"}/>
+                            <TableRow name={"Formulario 2"} creator={"Pablo"} modified={"15-09-2022"} created={"13-09-2022"}/>
+                            <TableRow name={"Formulario 3"} creator={"Yo"} modified={"14-09-2022"} created={"11-09-2022"}/>
+                            <TableRow name={"Formulario 4"} creator={"Yo"} modified={"15-09-2022"} created={"10-09-2022"}/>
+                        </Tbody>
                     </Table>
                 </TableContainer>              
                 </Flex>
