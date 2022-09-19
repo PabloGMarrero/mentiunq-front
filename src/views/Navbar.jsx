@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Divider, ButtonGroup, IconButton, Icon } from '@chakra-ui/react'
+import { Box, Flex, Text, Divider, ButtonGroup, IconButton, Icon, Input } from '@chakra-ui/react'
 import { BiShareAlt, BiExport } from 'react-icons/bi';
 import { BsCheck } from 'react-icons/bs';
 import { HiPlus } from 'react-icons/hi'
@@ -7,17 +7,46 @@ import { IoIosArrowDown } from 'react-icons/io'
 import { AiOutlineQuestionCircle } from 'react-icons/ai'
 
 import CustomButton from '../components/CustomButton';
-
+import { useState, useId } from 'react';
+import './Navbar.css'
 
 
 const TopNavbar = () => {
-    return(
+
+    const [animation, setAnimation] = useState('');
+    const [name, setName] = useState('My first presentation');
+    const id = useId();
+
+    const handleOnInput = (event) => {
+        event.preventDefault()
+        setName(event.target.value)
+    }
+
+    const handleOnFocus = async (event) => {
+        event.preventDefault()
+        setAnimation("animation")
+        await timeout(300);
+        setAnimation("")
+    }
+    
+    function timeout(number) {
+        return new Promise( res => setTimeout(res, number) );
+    }
+
+     return(
         <Flex
             flexDir='row'
             justifyContent='space-between'
         >
             <Box marginLeft={10} marginTop={"-10px"}>
-                <Text fontSize='18px' fontWeight={600}>My first presentation</Text >
+                <Input id={id} 
+                    value={name} 
+                    onFocus={e=>handleOnFocus(e)} 
+                    onInput={e => handleOnInput(e)} 
+                    borderColor={"transparent"} 
+                    borderRadius={"5px"} 
+                    className={animation}
+                />
                 <Text fontSize='13px' fontWeight={600} color="rgba(16, 24, 52, 0.5)">Created by</Text >
             </Box>
             <Flex 
