@@ -7,8 +7,8 @@ import { IoIosArrowDown } from 'react-icons/io'
 import { AiOutlineQuestionCircle } from 'react-icons/ai'
 
 import CustomButton from '../components/CustomButton';
-
-
+import { GoogleLogin } from 'react-google-login';
+import configData from "../../config.json";
 
 const TopNavbar = () => {
     return(
@@ -17,7 +17,7 @@ const TopNavbar = () => {
             justifyContent='space-between'
         >
             <Box marginLeft={10} marginTop={"-10px"}>
-                <Text fontSize='18px' fontWeight={600}>My first presentation</Text >
+                <Text fontSize='18px' fontWeight={600}>MentiUNQ</Text >
                 <Text fontSize='13px' fontWeight={600} color="rgba(16, 24, 52, 0.5)">Created by</Text >
             </Box>
             <Flex 
@@ -32,13 +32,12 @@ const TopNavbar = () => {
                 <Divider orientation='vertical' />
                 <Icon as={AiOutlineQuestionCircle} w={6} h={6}/> 
                 <Divider orientation='vertical' />
-                <p>Profile</p>
-                <CustomButton bg={"#CBD5E0"} icon={BiShareAlt} text="Share"/>
-                <ButtonGroup w={130} isAttached colorScheme={"messenger"} >
-                    <CustomButton colorScheme={"messenger"} icon={MdPlayArrow} text="Present" wB={6} hB={6}/>               
-                    <IconButton aria-label='Add to friends' icon={<IoIosArrowDown />} />
-                </ButtonGroup>
-                
+                <p>Profile</p>    
+                <GoogleLogin
+                    clientId={configData.GOOGLE_OAUTH_CLIENTID}
+                    buttonText="Login"
+                    scope='A'
+                />
             </Flex>
         </Flex>
     )
@@ -74,8 +73,6 @@ const Navbar = () => {
     return (    
         <Flex flexDir={"column"} bg="white" >
             <TopNavbar/>
-            <Divider m={2} />
-            <BottomNavbar/>
         </Flex>
     )        
 }

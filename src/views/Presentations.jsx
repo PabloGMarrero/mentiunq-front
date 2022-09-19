@@ -7,20 +7,20 @@ import { Flex,
     Table,
     Thead,
     Tbody,
-    Tfoot,
     Tr,
     Th,
-    Td,
     TableContainer, } from '@chakra-ui/react';
 
 import CustomButton from '../components/CustomButton';
 import TableRow from '../components/TableRow';
+import TopNavbar from '../views/Navbar';
 import { HiPlus } from 'react-icons/hi'
 
 const MainContent = ()=> {
     return (
         <Square bg="lightgray" w="100%" >
             <Flex bg="white" w="100%" h={"95%"} m={"10px"} justifyContent="left" flexDir={"column"}>
+            
                 <Flex bg="white" w="95%" h={"95%"} m={"10px"} justifyContent="left" flexDir={"column"}>
                     <Flex>Mis Presentaciones</Flex>
                     <Flex flexDir={"row"}> 
@@ -68,7 +68,8 @@ const MainContent = ()=> {
 
 const Presentations = () => {
     return(
-        <Flex flexDir="column"  w="100%">            
+        <Flex flexDir="column"  w="100%">
+                <TopNavbar/> 
                 <MainContent/>
         </Flex>
     )
