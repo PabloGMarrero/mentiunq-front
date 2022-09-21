@@ -9,8 +9,51 @@ import { AiOutlineQuestionCircle } from 'react-icons/ai'
 import CustomButton from '../components/CustomButton';
 import { GoogleLogin } from 'react-google-login';
 import configData from "../../config.json";
+import { useEffect } from 'react';
+import { gapi } from 'gapi-script';
+import { authenticate } from '../services/auth-service'
+
+const responseGoogle = (response) => {
+    console.log(JSON.stringify(response));
+}
+
+const handleSubmit = (resp) =>{
+    console.log("resp", resp)
+  }
+
+const createRequest = (response) => {
+
+    const request = {
+        "email" : response.profileObj.email,
+        "id_token" : response.xc.id_token
+    }
+    
+    return request;
+}
+
+const handleSuccessfullLogin = (response) => {
+    const request = createRequest(response);
+    console.log("request", request)
+
+    authenticate(request).
+    then(resp => {
+       handleSubmit(resp)
+    });
+}
 
 const TopNavbar = () => {
+
+    useEffect(()=>{
+        gapi.load("client:auth2", () => {
+            gapi.client.init({ 
+                clientId: configData.GOOGLE_OAUTH_CLIENTID, 
+                plugin_name: "ProductManager credential", 
+                scope: "email",
+            }); 
+        });
+        
+    }, []);
+
     return(
         <Flex
             flexDir='row'
@@ -36,7 +79,8 @@ const TopNavbar = () => {
                 <GoogleLogin
                     clientId={configData.GOOGLE_OAUTH_CLIENTID}
                     buttonText="Login"
-                    scope='A'
+                    onSuccess={handleSuccessfullLogin}
+                    onFailure={responseGoogle}
                 />
             </Flex>
         </Flex>
