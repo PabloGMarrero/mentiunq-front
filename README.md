@@ -35,7 +35,7 @@ Esta estructura se puede ver en el archivo ```src/App.jsx```
   - El path ```app/presentation/:hash``` sera la vista donde se visualiza una presentación en particular al momento de presentar. Se corresponde al elemento ```Presentation```.
   - El path ```/app``` mostrará todas las presentaciones de un usuario logueado. Se corresponde al elemento ```Presentations```.
   - El path ```/help``` será la vista para mostrar como utilizar la app. Se corresponde al elemento ```Help```
-  - El path ```"/"``` será la vista raiz del sitio. Se corresponde al elemento ```Home```
+  - El path ```/``` será la vista raiz del sitio. Se corresponde al elemento ```Home```
 
 ### Archivo de configuración
 
