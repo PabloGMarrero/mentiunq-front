@@ -33,7 +33,7 @@ const createRequest = (response) => {
 
 const handleSuccessfullLogin = (response) => {
     const request = createRequest(response);
-    console.log("request", request)
+    //console.log("request", request)
 
     authenticate(request).
     then(resp => {
