@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Divider, ButtonGroup, IconButton, Icon } from '@chakra-ui/react'
+import { Box, Flex, Text, Divider, ButtonGroup, IconButton, Icon, Alert, AlertTitle, AlertDescription } from '@chakra-ui/react'
 import { BiShareAlt, BiExport } from 'react-icons/bi';
 import { BsCheck } from 'react-icons/bs';
 import { HiPlus } from 'react-icons/hi'
@@ -7,22 +7,29 @@ import { IoIosArrowDown } from 'react-icons/io'
 import { AiOutlineQuestionCircle } from 'react-icons/ai'
 
 import CustomButton from '../components/CustomButton';
-import { GoogleLogin } from 'react-google-login';
+import { GoogleLogin, useGoogleLogin } from 'react-google-login';
 import configData from "../../config.json";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { gapi } from 'gapi-script';
 import { authenticate } from '../services/auth-service'
 
-const responseGoogle = (response) => {
-    console.log(JSON.stringify(response));
+const handleFailedLogin = () => {
+    <Alert status='error'>
+        <AlertTitle>
+            Falló el login de usuario
+        </AlertTitle>
+        <AlertDescription>
+            Es posible que no estés en la lista blanca
+        </AlertDescription>
+    </Alert>
 }
 
-const handleSubmit = (resp) =>{
-    console.log("resp", resp)
+const handleSubmit = (resp) => {
+    const accessToken = JSON.parse(resp.data.payload).accessToken;
+    localStorage.setItem("accessToken", accessToken);
   }
 
 const createRequest = (response) => {
-
     const request = {
         "email" : response.profileObj.email,
         "id_token" : response.xc.id_token
@@ -31,17 +38,21 @@ const createRequest = (response) => {
     return request;
 }
 
-const handleSuccessfullLogin = (response) => {
+const handleSuccessfullLogin = (response, func) => {
     const request = createRequest(response);
-    //console.log("request", request)
-
+    console.log(response);
     authenticate(request).
     then(resp => {
-       handleSubmit(resp)
+        handleSubmit(resp);
+        func(true);
+    }).catch((error) => {
+        handleFailedLogin();
+        func(false);
     });
 }
 
 const TopNavbar = () => {
+    const [isLogged, setIsLogged] = useState(false);
 
     useEffect(()=>{
         gapi.load("client:auth2", () => {
@@ -75,13 +86,14 @@ const TopNavbar = () => {
                 <Divider orientation='vertical' />
                 <Icon as={AiOutlineQuestionCircle} w={6} h={6}/> 
                 <Divider orientation='vertical' />
-                <p>Profile</p>    
-                <GoogleLogin
-                    clientId={configData.GOOGLE_OAUTH_CLIENTID}
-                    buttonText="Login"
-                    onSuccess={handleSuccessfullLogin}
-                    onFailure={responseGoogle}
-                />
+  
+                
+                {isLogged ? <div><p>Usuario Logueado</p></div> : <GoogleLogin
+                                                            clientId={configData.GOOGLE_OAUTH_CLIENTID}
+                                                            buttonText="Login"
+                                                            onSuccess={(request)=>(handleSuccessfullLogin(request, setIsLogged))}
+                                                            onFailure={handleFailedLogin}
+                                                        />}
             </Flex>
         </Flex>
     )
