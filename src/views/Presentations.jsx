@@ -15,8 +15,33 @@ import CustomButton from '../components/CustomButton';
 import TableRow from '../components/TableRow';
 import TopNavbar from '../views/Navbar';
 import { HiPlus } from 'react-icons/hi'
+import { useEffect, useState } from 'react';
+import { getById } from '../services/user-service';
+import { createForm } from '../services/form-service'
+import { parsePayload } from '../utils/parse-payload';
 
 const MainContent = ()=> {
+    const [forms, setForms] = useState([]);
+    const token = localStorage.getItem("accessToken") || "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwYWlzbWFyaWFub2FAZ21haWwuY29tIiwiaXNzIjoiT0FVVEgiLCJleHAiOjE2NjUwNDcyMjAsImVtYWlsIjoicGFpc21hcmlhbm9hQGdtYWlsLmNvbSIsImF1dGhvcml0aWVzIjpbIlVTRVIiXX0.ryVcoVVv3eibSImxkjzDg9SHzSl6W2z3FUUFP5hAR9g";
+    
+    useEffect(()=>{
+        const fetchData = () => {   
+            getById(1, token)
+            .then(resp=> setForms(parsePayload(resp)) )
+            .catch(err=>console.log(err))
+        }
+
+        fetchData();
+        
+    },[])
+
+    const handleCreatePresentation = (ev) =>{
+        ev.preventDefault()
+        createForm(1, token)
+        .then(resp=> setForms((oldForms)=> [...oldForms, parsePayload(resp)]) )
+        .catch(err=>console.log(err))
+    }
+
     return (
         <Square bg="lightgray" w="100%" >
             <Flex bg="white" w="100%" h={"95%"} m={"10px"} justifyContent="left" flexDir={"column"}>
@@ -25,7 +50,8 @@ const MainContent = ()=> {
                     <Flex>Mis Presentaciones</Flex>
                     <Flex flexDir={"row"}> 
                         <Flex flexDir={"row"} gap={"5px"} w="70%"> 
-                            <CustomButton colorScheme={"messenger"} icon={HiPlus} text="New slide"/>
+                            <CustomButton colorScheme={"messenger"} icon={HiPlus} text="New presentation" 
+                                onClick={(ev)=>handleCreatePresentation(ev)} />
                             <CustomButton bg={"lightgray"} icon={HiPlus} text="New folder"/>
                         </Flex>
                         <Flex justifyContent="right" gap={"5px"} flexDir={"row"} > 
@@ -47,17 +73,15 @@ const MainContent = ()=> {
                         <Thead>
                             <Tr>
                                 <Th>Nombre</Th>
-                                <Th>Creador</Th>
+                                <Th>Código Cooperativo</Th>
                                 <Th>Modificado</Th>
                                 <Th>Creado</Th>
                             </Tr>
                         </Thead>
                         <Tbody>
-                            <TableRow name={"Formulario 1"} creator={"Yo"} modified={"15-09-2022"} created={"14-09-2022"}/>
-                            <TableRow name={"Formulario 2"} creator={"Pablo"} modified={"15-09-2022"} created={"13-09-2022"}/>
-                            <TableRow name={"Formulario 3"} creator={"Yo"} modified={"14-09-2022"} created={"11-09-2022"}/>
-                            <TableRow name={"Formulario 4"} creator={"Yo"} modified={"15-09-2022"} created={"10-09-2022"}/>
+                            {forms ? forms.map( form => <TableRow key = {form.code} form = {form}/> ):null}
                         </Tbody>
+
                     </Table>
                 </TableContainer>              
                 </Flex>

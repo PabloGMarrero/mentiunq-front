@@ -1,12 +1,12 @@
 import { Tr, Td } from '@chakra-ui/react'
 
-const TableRow = ({name, creator, modified, created}) => {
+const TableRow = ({form}) => {
     return(
         <Tr>
-            <Td>{name}</Td>
-            <Td>{creator}</Td>
-            <Td>{modified}</Td>
-            <Td>{created}</Td>
+            <Td>{form.name}</Td>
+            <Td>{form.codeShare}</Td>
+            <Td>{form.updateDate}</Td>
+            <Td>{form.creationDate}</Td>
         </Tr>
     )
 }
