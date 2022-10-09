@@ -11,7 +11,7 @@ import { GoogleLogin, useGoogleLogin } from 'react-google-login';
 import configData from "../../config.json";
 import { useEffect, useState } from 'react';
 import { gapi } from 'gapi-script';
-import { authenticate } from '../services/auth-service'
+import { authenticate, useAuth } from '../services/auth-service'
 
 const handleFailedLogin = () => {
     <Alert status='error'>
@@ -24,10 +24,6 @@ const handleFailedLogin = () => {
     </Alert>
 }
 
-const handleSubmit = (resp) => {
-    const accessToken = JSON.parse(resp.data.payload).accessToken;
-    localStorage.setItem("accessToken", accessToken);
-  }
 
 const createRequest = (response) => {
     const request = {
@@ -40,19 +36,20 @@ const createRequest = (response) => {
 
 const handleSuccessfullLogin = (response, func) => {
     const request = createRequest(response);
-    console.log(response);
+
     authenticate(request).
     then(resp => {
-        handleSubmit(resp);
-        func(true);
+        auth().signin()
+        //func(true);
     }).catch((error) => {
         handleFailedLogin();
-        func(false);
+        //func(false);
     });
 }
 
 const TopNavbar = () => {
-    const [isLogged, setIsLogged] = useState(false);
+    //const [isLogged, setIsLogged] = useState(false);
+    const auth = useAuth()
 
     useEffect(()=>{
         gapi.load("client:auth2", () => {
@@ -88,7 +85,7 @@ const TopNavbar = () => {
                 <Divider orientation='vertical' />
   
                 
-                {isLogged ? <div><p>Usuario Logueado</p></div> : <GoogleLogin
+                {auth.user ? <div><p>Usuario Logueado</p></div> : <GoogleLogin
                                                             clientId={configData.GOOGLE_OAUTH_CLIENTID}
                                                             buttonText="Login"
                                                             onSuccess={(request)=>(handleSuccessfullLogin(request, setIsLogged))}
