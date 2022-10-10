@@ -32,6 +32,7 @@ function useProvideAuth() {
         if (user) {
             setLoading(false)
             setUser(user)
+            //handleSubmit()
             return user
         } else {
             setLoading(false)
