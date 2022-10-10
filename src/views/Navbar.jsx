@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Divider, ButtonGroup, IconButton, Icon, Alert, AlertTitle, AlertDescription } from '@chakra-ui/react'
+import { Box, Flex, Text, Divider, ButtonGroup, IconButton, Icon, Alert, AlertTitle, AlertDescription, Button } from '@chakra-ui/react'
 import { BiShareAlt, BiExport } from 'react-icons/bi';
 import { BsCheck } from 'react-icons/bs';
 import { HiPlus } from 'react-icons/hi'
@@ -11,7 +11,7 @@ import { GoogleLogin, useGoogleLogin } from 'react-google-login';
 import configData from "../../config.json";
 import { useEffect, useState } from 'react';
 import { gapi } from 'gapi-script';
-import { authenticate, useAuth } from '../services/auth-service'
+import { useAuth } from '../contexts/auth-context'
 
 const handleFailedLogin = () => {
     <Alert status='error'>
@@ -24,7 +24,6 @@ const handleFailedLogin = () => {
     </Alert>
 }
 
-
 const createRequest = (response) => {
     const request = {
         "email" : response.profileObj.email,
@@ -34,16 +33,18 @@ const createRequest = (response) => {
     return request;
 }
 
-const handleSuccessfullLogin = (response, login) => {
+const handleSuccessfullLogin = (response, auth) => {
     const request = createRequest(response);
-    console.log("antes handleSuccessfullLogin")
-    login(request);
-    console.log("después handleSuccessfullLogin")
+    auth.login(request);
+}
+
+const UserMenu = () =>{
+    const auth = useAuth()
+    return <div><Button onClick={auth.logout}/></div>
 }
 
 const TopNavbar = () => {
-    //const [isLogged, setIsLogged] = useState(false);
-    const { login, authed } = useAuth();
+    const auth = useAuth()
 
     useEffect(()=>{
         gapi.load("client:auth2", () => {
@@ -53,7 +54,6 @@ const TopNavbar = () => {
                 scope: "email",
             }); 
         });
-        console.log("authed", authed)
     }, []);
 
     return(
@@ -79,10 +79,10 @@ const TopNavbar = () => {
                 <Divider orientation='vertical' />
   
                 
-                {authed ? <div><p>Usuario Logueado</p></div> : <GoogleLogin
+                {auth.authed === true ? <UserMenu/> : <GoogleLogin
                                                             clientId={configData.GOOGLE_OAUTH_CLIENTID}
                                                             buttonText="Login"
-                                                            onSuccess={(request)=>(handleSuccessfullLogin(request, login))}
+                                                            onSuccess={(request)=>(handleSuccessfullLogin(request, auth))}
                                                             onFailure={handleFailedLogin}
                                                         />}
             </Flex>

@@ -69,8 +69,8 @@ const MainContent = ()=> {
 const Presentations = () => {
     return(
         <Flex flexDir="column"  w="100%">
-                <TopNavbar/> 
-                <MainContent/>
+            <TopNavbar/> 
+            <MainContent/>
         </Flex>
     )
 }
