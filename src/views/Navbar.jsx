@@ -34,22 +34,16 @@ const createRequest = (response) => {
     return request;
 }
 
-const handleSuccessfullLogin = (response, func) => {
+const handleSuccessfullLogin = (response, login) => {
     const request = createRequest(response);
-
-    authenticate(request).
-    then(resp => {
-        auth().signin()
-        //func(true);
-    }).catch((error) => {
-        handleFailedLogin();
-        //func(false);
-    });
+    console.log("antes handleSuccessfullLogin")
+    login(request);
+    console.log("después handleSuccessfullLogin")
 }
 
 const TopNavbar = () => {
     //const [isLogged, setIsLogged] = useState(false);
-    const auth = useAuth()
+    const { login, authed } = useAuth();
 
     useEffect(()=>{
         gapi.load("client:auth2", () => {
@@ -59,7 +53,7 @@ const TopNavbar = () => {
                 scope: "email",
             }); 
         });
-        
+        console.log("authed", authed)
     }, []);
 
     return(
@@ -85,10 +79,10 @@ const TopNavbar = () => {
                 <Divider orientation='vertical' />
   
                 
-                {auth.user ? <div><p>Usuario Logueado</p></div> : <GoogleLogin
+                {authed ? <div><p>Usuario Logueado</p></div> : <GoogleLogin
                                                             clientId={configData.GOOGLE_OAUTH_CLIENTID}
                                                             buttonText="Login"
-                                                            onSuccess={(request)=>(handleSuccessfullLogin(request, setIsLogged))}
+                                                            onSuccess={(request)=>(handleSuccessfullLogin(request, login))}
                                                             onFailure={handleFailedLogin}
                                                         />}
             </Flex>
