@@ -1,9 +1,10 @@
 import { Flex } from '@chakra-ui/react'
+import Navbar from './Navbar';
 
 const Home = () => {
     return(
-        <Flex>
-            Home....
+        <Flex flexDir="column"  w="100%">
+            <Navbar/>
         </Flex>
     )
 }
