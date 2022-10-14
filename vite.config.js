@@ -1,37 +1,20 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import { resolve } from 'path';
-import fs from 'fs/promises';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
+//const path = require("path");
 export default defineConfig({
-    resolve: {
-        alias: {
-            src: resolve(__dirname, 'src'),
-        },
-    },
-    esbuild: {
-        loader: 'jsx',
-        include: /src\/.*\.jsx?$/,
-        exclude: [],
-    },
-    optimizeDeps: {
-        esbuildOptions: {
-            plugins: [
-                {
-                    name: 'load-js-files-as-jsx',
-                    setup(build) {
-                        build.onLoad(
-                            { filter: /src\\.*\.js$/ },
-                            async (args) => ({
-                                loader: 'jsx',
-                                contents: await fs.readFile(args.path, 'utf8'),
-                            })
-                        );
-                    },
-                },
-            ],
-        },
-    },
-    plugins: [react()],
-});
+  plugins: [react()],
+  resolve: {
+    extensions: [
+      ".mjs",
+      ".js",
+      ".ts",
+      ".jsx",
+      ".tsx",
+      ".json",
+      ".vue",
+      ".scss"
+    ]
+  }
+})
