@@ -2,12 +2,12 @@ import { Box, Flex, Text, Divider, ButtonGroup, IconButton, Icon, Alert, AlertTi
 import { BsCheck } from 'react-icons/bs';
 import { AiOutlineQuestionCircle } from 'react-icons/ai'
 
-import { GoogleLogin, useGoogleLogin } from 'react-google-login';
+import { GoogleLogin } from 'react-google-login';
 import configData from "../../config.json";
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { gapi } from 'gapi-script';
 import { useAuth } from '../contexts/auth-context'
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const handleFailedLogin = () => {
     <Alert status='error'>
