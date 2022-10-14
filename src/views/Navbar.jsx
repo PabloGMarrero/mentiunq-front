@@ -1,53 +1,66 @@
-import { Box, Flex, Text, Divider, ButtonGroup, IconButton, Icon, Input } from '@chakra-ui/react'
-import { BiShareAlt, BiExport } from 'react-icons/bi';
+import { Box, Flex, Text, Divider, ButtonGroup, IconButton, Icon, Alert, AlertTitle, AlertDescription, Button } from '@chakra-ui/react'
 import { BsCheck } from 'react-icons/bs';
-import { HiPlus } from 'react-icons/hi'
-import { MdPlayArrow } from 'react-icons/md'
-import { IoIosArrowDown } from 'react-icons/io'
 import { AiOutlineQuestionCircle } from 'react-icons/ai'
 
-import CustomButton from '../components/CustomButton';
-import { useState, useId } from 'react';
-import './Navbar.css'
+import { GoogleLogin } from 'react-google-login';
+import configData from "../../config.json";
+import { useEffect } from 'react';
+import { gapi } from 'gapi-script';
+import { useAuth } from '../contexts/auth-context'
+import { useNavigate } from 'react-router-dom';
 
+const handleFailedLogin = () => {
+    <Alert status='error'>
+        <AlertTitle>
+            Falló el login de usuario
+        </AlertTitle>
+        <AlertDescription>
+            Es posible que no estés en la lista blanca
+        </AlertDescription>
+    </Alert>
+}
 
-const TopNavbar = () => {
-
-    const [animation, setAnimation] = useState('');
-    const [name, setName] = useState('My first presentation');
-    const id = useId();
-
-    const handleOnInput = (event) => {
-        event.preventDefault()
-        setName(event.target.value)
-    }
-
-    const handleOnFocus = async (event) => {
-        event.preventDefault()
-        setAnimation("animation")
-        await timeout(300);
-        setAnimation("")
+const createRequest = (response) => {
+    const request = {
+        "email" : response.profileObj.email,
+        "id_token" : response.xc.id_token
     }
     
-    function timeout(number) {
-        return new Promise( res => setTimeout(res, number) );
-    }
+    return request;
+}
 
-     return(
+const handleSuccessfullLogin = (response, auth, navigate) => {
+    const request = createRequest(response);  
+    auth.login(request, navigate);
+}
+
+const UserMenu = ({navigate}) =>{
+    const auth = useAuth()
+    return <div><Button onClick={e => auth.logout(e, navigate)}>Logout</Button></div>
+}
+
+const TopNavbar = () => {
+    const auth = useAuth()
+    const authed = auth.isLogged()
+    const navigate = useNavigate();
+
+    useEffect(()=>{
+        gapi.load("client:auth2", () => {
+            gapi.client.init({ 
+                clientId: configData.GOOGLE_OAUTH_CLIENTID, 
+                plugin_name: "ProductManager credential", 
+                scope: "email",
+            }); 
+        });
+    }, [authed]);
+
+    return(
         <Flex
             flexDir='row'
             justifyContent='space-between'
         >
             <Box marginLeft={10} marginTop={"-10px"}>
-                <Input id={id} 
-                    value={name} 
-                    onFocus={e=>handleOnFocus(e)} 
-                    onInput={e => handleOnInput(e)} 
-                    borderColor={"transparent"} 
-                    borderRadius={"5px"} 
-                    className={animation}
-                />
-                <Text fontSize='13px' fontWeight={600} color="rgba(16, 24, 52, 0.5)">Created by</Text >
+                <Text fontSize='18px' fontWeight={600}>MentiUNQ</Text >
             </Box>
             <Flex 
                 flexDir='row'
@@ -61,50 +74,23 @@ const TopNavbar = () => {
                 <Divider orientation='vertical' />
                 <Icon as={AiOutlineQuestionCircle} w={6} h={6}/> 
                 <Divider orientation='vertical' />
-                <p>Profile</p>
-                <CustomButton bg={"#CBD5E0"} icon={BiShareAlt} text="Share"/>
-                <ButtonGroup w={130} isAttached colorScheme={"messenger"} >
-                    <CustomButton colorScheme={"messenger"} icon={MdPlayArrow} text="Present" wB={6} hB={6}/>               
-                    <IconButton aria-label='Add to friends' icon={<IoIosArrowDown />} />
-                </ButtonGroup>
+  
                 
+                {authed ? <UserMenu navigate={navigate}/> : <GoogleLogin
+                                                            clientId={configData.GOOGLE_OAUTH_CLIENTID}
+                                                            buttonText="Login"
+                                                            onSuccess={(request)=>(handleSuccessfullLogin(request, auth, navigate))}
+                                                            onFailure={handleFailedLogin}
+                                                        />}
             </Flex>
         </Flex>
     )
 }
-
-const BottomNavbar = () => {
-    return(
-        <Flex 
-            flexDir='row'
-            justifyContent={"space-between"}
-            
-        >
-            <Flex 
-                flexDir='row'
-                gap={2}
-            >
-                <CustomButton colorScheme={"messenger"} icon={HiPlus} text="New slide"/>
-                <CustomButton bg={"#CBD5E0"} icon={BiExport} text="Import"/>
-            </Flex>
-            <Flex 
-                flexDir='row'
-            >
-                <p>Examples</p>
-                <p>Themes</p>
-                <p>Settings</p>
-            </Flex>
-        </Flex>
-    )
-}
-
 
 const Navbar = () => {
     return (    
         <Flex flexDir={"column"} bg="white" >
             <TopNavbar/>
-            <Divider m={2} />
-            <BottomNavbar/>
         </Flex>
     )        
 }
