@@ -9,7 +9,8 @@ import { Flex,
     Tbody,
     Tr,
     Th,
-    TableContainer, } from '@chakra-ui/react';
+    TableContainer, 
+} from '@chakra-ui/react';
 
 import CustomButton from '../components/CustomButton';
 import TableRow from '../components/TableRow';

@@ -11,53 +11,58 @@ export function ProvideAuth({ children }) {
 export const useAuth = () => useContext(authContext)
 
 function useProvideAuth() {
-    const [authed, setAuthed] = localStorage.getItem("logged") || useState(false);
-    const [user, setUser] = useState(false);
+    const [user, setUser] = useState(localStorage.getItem("user"));
     const [loading, setLoading] = useState(false)
 
-    const login = (request) => {
+    const login = (request, navigate) => {
         setLoading(true);
         authenticate(request)
         .then((resp)=>{
-            setAuthed(true);
             handleSubmit(resp);
+            navigate("/app");
         })
         .catch((err)=>{
-            setAuthed(false)
-            console.log(err)
+            setUser(null)
+            //TODO revisar si conviene mostrar el error
+            navigate("/");
         })
         setLoading(false);
     }
     
-    const logout = () => {
+    const logout = (ev, navigate) => {
         setLoading(true);
-        setAuthed(false)
-        console.log("logout...")
-        localStorage.removeItem("authed")
+        localStorage.removeItem("accessToken")
+        localStorage.removeItem("user")
         setLoading(false);
+        setUser(null)
+        navigate("/");
     }
 
     const isLogged = () =>{
-        return localStorage.getItem("authed")===true
+        const user = JSON.parse(localStorage.getItem("user"));
+        return user?.authed === true
     }
 
     useEffect(() => {
-        if(authed){
-            localStorage.setItem("authed", authed);
-        }
-    }, [authed])
+    }, [])
 
     return {
         user,
         login,
         logout,
-        authed,
         isLogged
-      }
+    }
 }
 
 const handleSubmit = (resp) => {
     const accessToken = JSON.parse(resp.data.payload).accessToken;
-    localStorage.setItem("accessToken", accessToken);
-    
+    const userId = JSON.parse(resp.data.payload).id;
+
+    const user = {
+        userId,
+        "authed": true
+    }
+
+    localStorage.setItem("accessToken", accessToken)
+    localStorage.setItem("user", JSON.stringify(user));
 }
