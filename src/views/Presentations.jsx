@@ -23,22 +23,25 @@ import { parsePayload } from '../utils/parse-payload';
 
 const MainContent = ()=> {
     const [forms, setForms] = useState([]);
-    const token = localStorage.getItem("accessToken") || "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwYWlzbWFyaWFub2FAZ21haWwuY29tIiwiaXNzIjoiT0FVVEgiLCJleHAiOjE2NjUwNDcyMjAsImVtYWlsIjoicGFpc21hcmlhbm9hQGdtYWlsLmNvbSIsImF1dGhvcml0aWVzIjpbIlVTRVIiXX0.ryVcoVVv3eibSImxkjzDg9SHzSl6W2z3FUUFP5hAR9g";
-    
-    useEffect(()=>{
-        const fetchData = () => {   
-            getById(1, token)
+    const [user] = useState(JSON.parse(localStorage.getItem("user")));
+    const [token] = useState(localStorage.getItem("accessToken"));
+
+    useEffect(()=>{  
+        const fetchData = () => {  
+            getById(user.userId, token)
             .then(resp=> setForms(parsePayload(resp)) )
             .catch(err=>console.log(err))
         }
 
-        fetchData();
+        if (user){
+            fetchData();
+        }       
         
     },[])
 
     const handleCreatePresentation = (ev) =>{
         ev.preventDefault()
-        createForm(1, token)
+        createForm(user.userId, token)
         .then(resp=> setForms((oldForms)=> [...oldForms, parsePayload(resp)]) )
         .catch(err=>console.log(err))
     }

@@ -10,7 +10,7 @@ const createForm = (userId, token) => {
         }
       };
 
-    return axios.post(API_URL+"/"+userId, {}, config);
+    return axios.post(API_URL+"/user/"+userId, {}, config);
 }
 
 export {createForm}
