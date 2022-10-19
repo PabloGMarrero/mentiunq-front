@@ -24,7 +24,7 @@ import { parsePayload } from '../utils/parse-payload';
 
 const MainContent = ()=> {
     const [forms, setForms] = useState([]);
-    const [user] = useState(JSON.parse(localStorage.getItem("user")));
+    const [user] = useState(parsePayload(localStorage.getItem("user")));
     const [token] = useState(localStorage.getItem("accessToken"));
     const [searchString, setSearchString] = useState("");
 
