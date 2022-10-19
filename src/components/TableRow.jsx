@@ -1,12 +1,31 @@
-import { Tr, Td } from '@chakra-ui/react'
+import { Tr, Td, Link, Menu, MenuButton, MenuList, MenuItem, MenuDivider, IconButton } from '@chakra-ui/react'
+import { Link as ReachLink } from "react-router-dom"
 
-const TableRow = ({name, creator, modified, created}) => {
+const TableRow = ({form}) => {
+
     return(
         <Tr>
-            <Td>{name}</Td>
-            <Td>{creator}</Td>
-            <Td>{modified}</Td>
-            <Td>{created}</Td>
+            <Td><Link as={ReachLink} to={'/app/presentation/'+form.code+'/edit'} >{form.name}</Link ></Td>
+            <Td>{form.codeShare}</Td>
+            <Td>{form.updateDate}</Td>
+            <Td>{form.creationDate}</Td>
+            <Td>
+                <Menu>
+                    <MenuButton as={IconButton}
+                    aria-label='Options'
+                    variant='outline'>
+                        ...
+                    </MenuButton>
+                    <MenuList>
+                        <MenuItem>Presentar</MenuItem>
+                        <MenuItem>Ver resultados</MenuItem>
+                        <MenuItem>Compartir</MenuItem>
+                        <MenuDivider />
+                        <MenuItem>Renombrar</MenuItem>
+                        <MenuItem color="red.500">Borrar</MenuItem>
+                    </MenuList>
+                </Menu>
+            </Td>
         </Tr>
     )
 }
