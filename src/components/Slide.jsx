@@ -2,13 +2,17 @@ import { Flex, Box, Text, Icon } from '@chakra-ui/react'
 import { MdPlayArrow } from 'react-icons/md'
 import { BsTrash } from 'react-icons/bs'
 import CustomButton from './CustomButton';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
-const Slide = ({question, deleteSlide, formId}) => {
-    const navigate = useNavigate();
+const Slide = ({question, deleteSlide, formId, setCurrentQuestion}) => {
     
+    
+    useEffect(()=>{
+        //{ev=> navigate("/app/presentation/"+formId+"/edit/"+question.id)}>
+    }, [])
+
     return(
-        <Flex onClick={ev=> navigate("/app/presentation/"+formId+"/edit/"+question.id)}>
+        <Flex onClick={ev=>setCurrentQuestion(question)}> 
             <Box >
                 <Flex flexDir={"column"} alignItems="center">
                     <Text fontSize='12px' fontWeight={600} >{question.id}</Text>

@@ -11,14 +11,23 @@ import { Select } from "chakra-react-select"
 import Slide from '../components/Slide';
 import { HiPlus } from 'react-icons/hi'
 import { BiExport } from 'react-icons/bi'
+import { useNavigate } from 'react-router-dom';
 
-const LeftBar = ({formId, questions, deleteSlide}) =>
+const LeftBar = ({formId, questions, deleteSlide, setCurrentQuestion}) =>
 {
     
     return (
         <Box width={"25%"} >
             <Flex flexDir="column">
-                {questions ? questions.map( question => <Slide key = {question.id} question = {question} deleteSlide ={deleteSlide} formId={formId} /> ): null }
+                {questions ? questions.map( question => 
+                    <Slide 
+                        key = {question.id} 
+                        question = {question} 
+                        deleteSlide ={deleteSlide} 
+                        formId={formId} 
+                        setCurrentQuestion={setCurrentQuestion}
+                    /> )
+                    : null }
             </Flex>
         </Box>
     )
@@ -158,6 +167,8 @@ const EditPresentation = ({formId, defaultQuestions}) => {
     const [token] = useState(localStorage.getItem("accessToken"));
     //const [slideId, setSlideId] = useState(null);
     //const [question, setQuestion] = useState('');
+    const navigate = useNavigate();
+    const [currentQuestion, setCurrentQuestion] = useState(null);
 
     useEffect(() => {
         const fetchData = () => {   
@@ -166,9 +177,14 @@ const EditPresentation = ({formId, defaultQuestions}) => {
             .catch(err=>console.log(err))
         }
         fetchQuestions();
+        fetchDataQuestion();
         fetchData();
-    }, []);
+    }, [currentQuestion]);
     
+    const fetchDataQuestion = () =>{
+        console.log(currentQuestion)    
+    }
+
     const fetchQuestions = () => {
         getQuestionsById(5, token)
         .then(resp=>{
@@ -199,7 +215,7 @@ const EditPresentation = ({formId, defaultQuestions}) => {
             <Navbar/>
             <BottomNavbar slides={slides} newSlide={handleCreateNewSlide} />
             <Flex flexDir="row" paddingTop={5} h={"80vh"}>
-                <LeftBar formId={5} questions={questions} deleteSlide={deleteSlide}/>
+                <LeftBar formId={5} questions={questions} deleteSlide={deleteSlide} setCurrentQuestion={setCurrentQuestion}/>
                 <MainContent/>
                 <RightBar slides={slides}/>
             </Flex>
