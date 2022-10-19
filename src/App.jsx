@@ -15,7 +15,7 @@ function App() {
       <Flex margin={4}>
         <BrowserRouter>
           <Routes>
-              <Route path="/app/presentation/:hash/edit" element={< PrivateComponent Component={ EditPresentation } />} />
+              <Route path="/app/presentation/:hash/edit/:formId" element={< PrivateComponent Component={ EditPresentation } />} />
               <Route path="/app/presentation/:hash" element={< PrivateComponent Component={ Presentation} />} />
               <Route path="/app" element={< PrivateComponent Component={Presentations}/>} />
               <Route path="/help" element={< Help/>} />

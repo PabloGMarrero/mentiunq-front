@@ -1,32 +1,32 @@
 //import axios from 'axios';
 import { REST_API_URL } from './constants'
 
-const API_URL = `${REST_API_URL}/slides`;
+//const API_URL = `${REST_API_URL}/slide`;
 
 const popular = [
     {
         label: "Multiple choice",
-        value: "multiple-choice",
+        value: "1",
     },
     {
-        label: "Word cloud",
-        value: "word-cloud",
+        label: "Word Cloud",
+        value: "2",
     },
     {
         label: "Open ended",
-        value: "open-ended",
+        value: "3",
     },
     {
         label: "Scales",
-        value: "scales",
+        value: "4",
     },
     {
         label: "Ranking",
-        value: "Ranking",
+        value: "5",
     },
     {
         label: "Q&A",
-        value: "q-a",
+        value: "6",
     }
 
 ]
@@ -34,34 +34,34 @@ const popular = [
 const quiz = [
     {
         label: "Select Answer",
-        value: "select-answer",
+        value: "7",
     },
     {
         label: "Type Answer",
-        value: "type-answer",
+        value: "8",
     }
 ]
 
 const content = [
     {
         label: "Heading",
-        value: "heading",
+        value: "9",
     },
     {
         label: "Paragraph",
-        value: "paragraph",
+        value: "10",
     },
     {
         label: "Bullets",
-        value: "bullets",
+        value: "11",
     },
     {
         label: "Image",
-        value: "Image",
+        value: "12",
     },
     {
         label: "Video",
-        value: "Video",
+        value: "13",
     }
 
 ]
@@ -72,4 +72,7 @@ const mock = [
     {label:"Content slides", options: content},    
 ]
 
-export let findAll = () => new Promise(resolve => resolve(mock));
+const findAll = () => new Promise(resolve => resolve(mock));
+
+
+export { findAll }
