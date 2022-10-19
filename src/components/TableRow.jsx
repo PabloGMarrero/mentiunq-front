@@ -1,9 +1,11 @@
-import { Tr, Td } from '@chakra-ui/react'
+import { Tr, Td, Link } from '@chakra-ui/react'
+import { Link as ReachLink } from "react-router-dom"
 
 const TableRow = ({form}) => {
+
     return(
         <Tr>
-            <Td>{form.name}</Td>
+            <Td><Link as={ReachLink} to={'/app/presentation/'+form.code+'/edit'} >{form.name}</Link ></Td>
             <Td>{form.codeShare}</Td>
             <Td>{form.updateDate}</Td>
             <Td>{form.creationDate}</Td>
