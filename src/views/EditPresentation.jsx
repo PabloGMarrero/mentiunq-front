@@ -4,14 +4,14 @@ import { Flex, Text, Box, Container, FormControl, FormLabel, Square, Button,
 import Navbar from './Navbar'
 import CustomButton from '../components/CustomButton'
 import { findAll } from '../services/slides-service';
-import { createSlide, getQuestionsById, deleteQuestionById } from '../services/form-service';
+import { createQuestion, getQuestionsById, deleteQuestionById, getFormByCode } from '../services/form-service';
 import { parsePayload } from '../utils/parse-payload'
 import { useState, useEffect, useRef } from 'react';
 import { Select } from "chakra-react-select"
 import Slide from '../components/Slide';
 import { HiPlus } from 'react-icons/hi'
 import { BiExport } from 'react-icons/bi'
-import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const LeftBar = ({formId, questions, deleteSlide, setCurrentQuestion}) =>
 {
@@ -26,6 +26,7 @@ const LeftBar = ({formId, questions, deleteSlide, setCurrentQuestion}) =>
                         deleteSlide ={deleteSlide} 
                         formId={formId} 
                         setCurrentQuestion={setCurrentQuestion}
+                        isBinDisabled = {questions.length < 2}
                     /> )
                     : null }
             </Flex>
@@ -160,54 +161,80 @@ const NewSlideDrawer = ({newSlide, slides}) => {
   )
 }
 
-const EditPresentation = ({formId, defaultQuestions}) => {
+const EditPresentation = () => {
     
     const [slides, setSlides] = useState([]);
-    const [questions, setQuestions] = useState(defaultQuestions);
+    const [questions, setQuestions] = useState([]);
     const [token] = useState(localStorage.getItem("accessToken"));
-    //const [slideId, setSlideId] = useState(null);
-    //const [question, setQuestion] = useState('');
-    const navigate = useNavigate();
     const [currentQuestion, setCurrentQuestion] = useState(null);
+    const code = useParams().hash
+    const [form, setForm] = useState(null);
+    const [loading, isLoading] = useState(false);
 
     useEffect(() => {
-        const fetchData = () => {   
+        const fetchDefaultsSlides = () => {
+            isLoading(true)
             findAll()
             .then(resp=>setSlides(resp))
             .catch(err=>console.log(err))
+            isLoading(false)
         }
-        fetchQuestions();
-        fetchDataQuestion();
-        fetchData();
-    }, [currentQuestion]);
+        const fetchFormByCode = (code, token) => {
+            isLoading(true)
+            getFormByCode(code, token)
+            .then(resp=>{             
+                setForm(parsePayload(resp))
+            })
+            .catch(err=>console.log(err))
+            isLoading(false)
+        }
+        
+        fetchDefaultsSlides();
+        if(!form){
+            fetchFormByCode(code, token)
+        }
+        if(form && !loading){
+            fetchQuestions();
+            fetchDataQuestion();
+        }
+        
+    }, [currentQuestion, form]);
     
     const fetchDataQuestion = () =>{
         console.log(currentQuestion)    
     }
 
-    const fetchQuestions = () => {
-        getQuestionsById(5, token)
-        .then(resp=>{
+    const fetchQuestions = () => { 
+        isLoading(true)
+        getQuestionsById(form.id, token)
+        .then(resp=>{         
             setQuestions(parsePayload(resp))
         })
         .catch(err=>console.log(err))
+        isLoading(false)
     }
 
     const deleteSlide = (questionId) => {
-        deleteQuestionById(5, questionId, token)
-        .then(resp=>{
-            fetchQuestions();
-        })
-        .catch(err=>console.log(err))
+        isLoading(true)
+        if(form){
+            deleteQuestionById(form.id, questionId, token)
+            .then(resp=>{
+                fetchQuestions();
+            })
+            .catch(err=>console.log(err))
+        }
+        isLoading(false)
     }
 
     const handleCreateNewSlide = (question, slideId, onClose) =>{
-        createSlide(5, token, slideId, question)   
-        .then(resp=>{
-            onClose();
-            fetchQuestions();
-        })
-        .catch(err=>console.log(err))
+        if(form){
+            createQuestion(form.id, token, slideId, question)   
+            .then(resp=>{
+                onClose();
+                fetchQuestions();
+            })
+            .catch(err=>console.log(err))
+        }
     }
 
     return (
