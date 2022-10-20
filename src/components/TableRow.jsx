@@ -2,9 +2,8 @@ import { Tr, Td, Link, Menu, MenuButton, MenuList, MenuItem, MenuDivider, IconBu
 import { Link as ReachLink } from "react-router-dom"
 
 const TableRow = ({form}) => {
-
     return(
-        <Tr>
+            <Tr>
             <Td><Link as={ReachLink} to={'/app/presentation/'+form.code+'/edit'} >{form.name}</Link ></Td>
             <Td>{form.codeShare}</Td>
             <Td>{form.updateDate}</Td>

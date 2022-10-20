@@ -2,8 +2,7 @@ import { Flex,
     Square,
     Input, 
     InputGroup,
-    InputLeftElement, 
-    Select, 
+    InputLeftElement,  
     Table,
     Thead,
     Tbody,
@@ -24,7 +23,7 @@ import { parsePayload } from '../utils/parse-payload';
 
 const MainContent = ()=> {
     const [forms, setForms] = useState([]);
-    const [user] = useState(parsePayload(localStorage.getItem("user")));
+    const [user] = useState(JSON.parse(localStorage.getItem("user")));
     const [token] = useState(localStorage.getItem("accessToken"));
     const [searchString, setSearchString] = useState("");
 
@@ -44,7 +43,10 @@ const MainContent = ()=> {
     const handleCreatePresentation = (ev) =>{
         ev.preventDefault()
         createForm(user.userId, token)
-        .then(resp=> setForms((oldForms)=> [...oldForms, parsePayload(resp)]) )
+        .then(resp=> {
+            const form = parsePayload(resp);
+            setForms((oldForms)=> [...oldForms, form]) 
+        })
         .catch(err=>console.log(err))
     }
 

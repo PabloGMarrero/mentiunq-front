@@ -8,9 +8,52 @@ const createForm = (userId, token) => {
         headers:{
             "Authorization": "Bearer "+ token
         }
-      };
+    };
 
     return axios.post(API_URL+"/user/"+userId, {}, config);
 }
 
-export {createForm}
+const createQuestion = (formId, token, slideId, question) => {
+    const config = (token) ={
+        headers:{
+                "Authorization": "Bearer "+ token
+        }
+    }
+
+    const questionObject = {
+        slideId,
+        question
+    }
+
+    return axios.patch(API_URL+"/"+formId, questionObject, config);
+}
+
+const getQuestionsById = (formId, token) => {
+    const config = (token) ={
+        headers:{
+                "Authorization": "Bearer "+ token
+        }
+    }
+    return axios.get(API_URL+"/"+formId, config)
+}
+
+const deleteQuestionById = (formId, questionId, token) => {
+    const config = (token) ={
+        headers:{
+                "Authorization": "Bearer "+ token
+        }
+    }
+    return axios.delete(API_URL+"/"+formId+"?questionId="+questionId, config)
+}
+
+const getFormByCode = (code, token) => {
+    const config = {
+        headers:{
+            "Authorization": "Bearer "+ token
+        }
+    };
+
+    return axios.get(API_URL+"/code/"+code, config)
+}
+
+export { createForm, createQuestion, getQuestionsById, deleteQuestionById, getFormByCode }
