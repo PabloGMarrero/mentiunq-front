@@ -2,6 +2,7 @@ import { Flex } from '@chakra-ui/react'
 import EditPresentation from './views/EditPresentation'
 import Presentation from './views/Presentation'
 import Presentations from './views/Presentations'
+import Voting from './views/Voting'
 import Help from './views/Help'
 import Home from './views/Home'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -18,6 +19,7 @@ function App() {
               <Route path="/app/presentation/:hash/edit" element={< PrivateComponent Component={ EditPresentation } />} />
               <Route path="/app/presentation/:hash" element={< PrivateComponent Component={ Presentation} />} />
               <Route path="/app" element={< PrivateComponent Component={Presentations}/>} />
+              <Route path="/:hash" element={< Voting/>} />
               <Route path="/help" element={< Help/>} />
               <Route path="/" element={<Home/>} />
               <Route path="*" element={<p>UPS 404</p>} />
