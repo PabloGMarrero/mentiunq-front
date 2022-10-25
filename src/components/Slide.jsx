@@ -5,7 +5,10 @@ import { BsTrash } from 'react-icons/bs'
 const Slide = ({question, deleteSlide, setCurrentQuestion, isBinDisabled}) => {
     
     return(
-        <Flex onClick={ev=>setCurrentQuestion(question)}> 
+        <Flex onClick={ev=>{
+            ev.preventDefault();
+            setCurrentQuestion(question)}
+        }> 
             <Box >
                 <Flex flexDir={"column"} alignItems="center">
                     <Text fontSize='12px' fontWeight={600} >{question.id}</Text>

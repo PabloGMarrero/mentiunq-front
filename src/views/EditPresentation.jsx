@@ -1,10 +1,12 @@
 import { Flex, Text, Box, Container, FormControl, FormLabel, Square, Button, 
     Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter,
-    Input, useDisclosure, Stack} from '@chakra-ui/react'
+    Input, useDisclosure, Stack, FormHelperText, FormErrorMessage} from '@chakra-ui/react'
 import Navbar from './Navbar'
 import CustomButton from '../components/CustomButton'
+import Option from '../components/Option'
 import { findAll } from '../services/slides-service';
-import { createQuestion, getQuestionsById, deleteQuestionById, getFormByCode } from '../services/form-service';
+import { getQuestionByCodeShare } from '../services/answer-service';
+import { createQuestion, getQuestionsById, deleteQuestionById, getFormByCode, createOption } from '../services/form-service';
 import { parsePayload } from '../utils/parse-payload'
 import { useState, useEffect, useRef } from 'react';
 import { Select } from "chakra-react-select"
@@ -44,10 +46,21 @@ const MainContent = ()=> {
     )
 }
 
-const RightBar = ({slides}) =>
+const RightBar = ({slides, currentQuestion, addNewQuestion}) =>
 {
+    const [input, setInput] = useState('')
+    const handleChangeQuestion = (e) => setInput(e.target.value)
+    const isError = input === ''
+
+  
+    useEffect(()=>{
+        //console.log("currentQuestion", currentQuestion)
+    }, [currentQuestion])
+
+
     return (
         <Box flex='1'>
+            {currentQuestion ?
             <Container>
                 <FormControl >
                     <FormLabel w={"300px"}>Slide type</FormLabel>
@@ -58,10 +71,38 @@ const RightBar = ({slides}) =>
                         }
                         placeholder="Select slide type."
                         closeMenuOnSelect={true}
-                        hasStickyGroupHeaders 
+                        hasStickyGroupHeaders
+                        defaultValue={slides[0].options[0].value}
+                        value={currentQuestion.question}
                     />
                 </FormControl>
+                <FormControl>
+                    <FormLabel w={"300px"}>Tu pregunta</FormLabel>
+                    <Input type='text' value={input} onChange={handleChangeQuestion} />
+                    {!isError ? (
+                        <FormHelperText>
+                        Ingresá el titulo de tu pregunta.
+                        </FormHelperText>
+                    ) : (
+                        <FormErrorMessage>Nombre de pregunta es requerido.</FormErrorMessage>)}
+                </FormControl>
+                <FormControl>
+                    <FormLabel w={"300px"}>Opciones</FormLabel>
+                    {
+                        currentQuestion 
+                        ? currentQuestion.mentiOptions.map( question => <Option key={question.id} question={question} /> )
+                        : null 
+                    }
+
+
+                    <Input type='text' value={input} onChange={ev=>console.log("....")}></Input>
+                    <CustomButton bg={"#CBD5E0"} icon={HiPlus} text="Agregá nueva opción" onClick={ev=>addNewQuestion(ev)} />
+                    
+                    
+                </FormControl>
             </Container>
+            : null
+            }
         </Box>
     )
 }
@@ -193,25 +234,53 @@ const EditPresentation = () => {
         if(!form){
             fetchFormByCode(code, token)
         }
+        
         if(form && !loading){
-            fetchQuestions();
-            fetchDataQuestion();
+            fetchQuestionsFormByFormId();
+            fetchAnswerQuestion();
         }
         
-    }, [currentQuestion, form]);
+    }, [form]);
     
-    const fetchDataQuestion = () =>{
-        console.log(currentQuestion)    
+    const fetchAnswerQuestion = () =>{
+        if (form){
+            isLoading(true)
+            getQuestionByCodeShare(form.codeShare, token)
+            .then(resp => {
+                setCurrentQuestion(parsePayload(resp))
+            })
+            .catch(err => console.log(err))
+            isLoading(false)
+        }
+        
     }
 
-    const fetchQuestions = () => { 
+    const fetchQuestionsFormByFormId = () => { 
+        //revisar evitar que al hacer click en la pregunta se dispara este fetch si la pregunta no cambió
         isLoading(true)
         getQuestionsById(form.id, token)
-        .then(resp=>{         
+        .then(resp=>{      
             setQuestions(parsePayload(resp))
         })
         .catch(err=>console.log(err))
         isLoading(false)
+    }
+
+    const addNewOption = (ev) => {
+        ev.preventDefault()
+        const numberOption = currentQuestion.mentiOptions.length === 0 ? 1 : currentQuestion.mentiOptions.length + 1
+        const option = {"option":"Opción " + numberOption};
+        isLoading(true)
+        createOption(form.id, token, currentQuestion.id, option)
+        .then(resp=> {
+            const response = parsePayload(resp)
+            console.log(response)
+            fetchAnswerQuestion()
+        })
+        .catch(err => console.log(err))
+        isLoading(false)
+
+        //console.log("addNewQuestion")
     }
 
     const deleteSlide = (questionId) => {
@@ -219,7 +288,7 @@ const EditPresentation = () => {
         if(form){
             deleteQuestionById(form.id, questionId, token)
             .then(resp=>{
-                fetchQuestions();
+                fetchQuestionsFormByFormId();
             })
             .catch(err=>console.log(err))
         }
@@ -228,12 +297,14 @@ const EditPresentation = () => {
 
     const handleCreateNewSlide = (question, slideId, onClose) =>{
         if(form){
+            isLoading(true)
             createQuestion(form.id, token, slideId, question)   
             .then(resp=>{
                 onClose();
-                fetchQuestions();
+                fetchQuestionsFormByFormId();
             })
             .catch(err=>console.log(err))
+            isLoading(false)
         }
     }
 
@@ -244,7 +315,7 @@ const EditPresentation = () => {
             <Flex flexDir="row" paddingTop={5} h={"80vh"}>
                 <LeftBar formId={5} questions={questions} deleteSlide={deleteSlide} setCurrentQuestion={setCurrentQuestion}/>
                 <MainContent/>
-                <RightBar slides={slides}/>
+                <RightBar slides={slides} currentQuestion={currentQuestion} addNewQuestion={addNewOption}/>
             </Flex>
         </Flex>
     )
