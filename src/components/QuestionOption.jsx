@@ -1,12 +1,17 @@
-import { Flex, Box, Text, Icon, IconButton } from '@chakra-ui/react'
+import { Box, Stack, Radio, Flex } from '@chakra-ui/react'
 
 
 const QuestionOption = (option) => {
-    
     return(
-        <Flex> 
-            {option.name}
-        </Flex>
+        <Box borderWidth='2px' borderRadius='lg' overflow='hidden'>
+            <Flex w="95%" h={"95%"} p='4' justifyContent="left" flexDir={"column"} > 
+                <Stack>
+                    <Radio size='lg' name='1' value={option.option.id} colorScheme='blue'>
+                        {option.option.name}
+                    </Radio>
+                </Stack>
+            </Flex>
+        </Box>    
     )
 }
 
