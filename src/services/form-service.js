@@ -28,8 +28,8 @@ const createQuestion = (formId, token, slideId, question) => {
     return axios.patch(API_URL+"/"+formId, questionObject, config);
 }
 
-const getQuestionsById = (formId, token) => {
-    const config = (token) ={
+const getQuestionsByFormId = (formId, token) => {
+    const config = {
         headers:{
                 "Authorization": "Bearer "+ token
         }
@@ -60,4 +60,24 @@ const getFormByCode = (code, token) => {
     return axios.get(API_URL+"/code/"+code, config)
 }
 
-export { createForm, createQuestion, getQuestionsById, deleteQuestionById, getFormByCode, getVotingQuestion }
+const createOption = (formId, token, questionId, option) => {
+    const config = (token) ={
+        headers:{
+                "Authorization": "Bearer "+ token
+        }
+    }
+
+    return axios.patch(API_URL+"/"+formId+"/question/"+questionId, option, config);
+}
+
+const updateNewCurrentQuestion = (questionId, formId, token) => {
+    const config = {
+        headers:{
+            "Authorization": "Bearer "+ token
+        }
+    };
+
+    return axios.patch(API_URL+"/"+formId+"/current/question/"+questionId, {}, config);
+}
+
+export { createForm, createQuestion, getQuestionsByFormId as getQuestionsById, deleteQuestionById, getFormByCode, getVotingQuestion, createOption, updateNewCurrentQuestion }
