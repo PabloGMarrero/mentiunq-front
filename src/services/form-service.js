@@ -37,10 +37,6 @@ const getQuestionsByFormId = (formId, token) => {
     return axios.get(API_URL+"/"+formId, config)
 }
 
-const getVotingQuestion = (formCodeShare) => {
-    return axios.get(`${REST_API_URL}/answer/form/`+formCodeShare+`/question/current`)
-}
-
 const deleteQuestionById = (formId, questionId, token) => {
     const config = (token) ={
         headers:{
@@ -80,4 +76,4 @@ const updateNewCurrentQuestion = (questionId, formId, token) => {
     return axios.patch(API_URL+"/"+formId+"/current/question/"+questionId, {}, config);
 }
 
-export { createForm, createQuestion, getQuestionsByFormId as getQuestionsById, deleteQuestionById, getFormByCode, getVotingQuestion, createOption, updateNewCurrentQuestion }
+export { createForm, createQuestion, getQuestionsByFormId as getQuestionsById, deleteQuestionById, getFormByCode, createOption, updateNewCurrentQuestion }

@@ -13,4 +13,13 @@ const getQuestionByCodeShare = (codeShare, token) => {
 }
 
 
-export { getQuestionByCodeShare }
+const getVotingQuestion = (formCodeShare) => {
+    return axios.get(API_URL+`/form/`+formCodeShare+`/question/current`)
+}
+
+const vote = (formCodeShare, questionId, optionId) => {
+    return axios.post(API_URL+"/form/"+formCodeShare+"/question/"+questionId+"/option/"+optionId, {});
+}
+
+
+export { getQuestionByCodeShare, getVotingQuestion, vote }
