@@ -6,18 +6,18 @@ import CustomButton from '../components/CustomButton'
 import Option from '../components/Option'
 import { findAll } from '../services/slides-service';
 import { getQuestionByCodeShare } from '../services/answer-service';
-import { createQuestion, getQuestionsById, deleteQuestionById, getFormByCode, createOption } from '../services/form-service';
+import { createQuestion, getQuestionsById, deleteQuestionById, getFormByCode, createOption, updateNewCurrentQuestion } from '../services/form-service';
 import { parsePayload } from '../utils/parse-payload'
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { Select } from "chakra-react-select"
 import Slide from '../components/Slide';
 import { HiPlus } from 'react-icons/hi'
 import { BiExport } from 'react-icons/bi'
+import { FiSave } from 'react-icons/fi'
 import { useParams } from 'react-router-dom';
 
-const LeftBar = ({formId, questions, deleteSlide, setCurrentQuestion}) =>
+const LeftBar = ({questions, deleteSlide, updateCurrentQuestion}) =>
 {
-    
     return (
         <Box width={"25%"} >
             <Flex flexDir="column">
@@ -26,8 +26,7 @@ const LeftBar = ({formId, questions, deleteSlide, setCurrentQuestion}) =>
                         key = {question.id} 
                         question = {question} 
                         deleteSlide ={deleteSlide} 
-                        formId={formId} 
-                        setCurrentQuestion={setCurrentQuestion}
+                        updateCurrentQuestion={updateCurrentQuestion}
                         isBinDisabled = {questions.length < 2}
                     /> )
                     : null }
@@ -46,16 +45,35 @@ const MainContent = ()=> {
     )
 }
 
-const RightBar = ({slides, currentQuestion, addNewQuestion}) =>
+const RightBar = ({slides, currentQuestion, addNewOption, setCurrentQuestion}) =>
 {
-    const [input, setInput] = useState('')
-    const handleChangeQuestion = (e) => setInput(e.target.value)
-    const isError = input === ''
-
+    const [loading, isLoading] = useState(false)
   
     useEffect(()=>{
-        //console.log("currentQuestion", currentQuestion)
+        if(currentQuestion){
+            //updateCurrentQuestion(currentQuestion.id)
+            setCurrentQuestion(currentQuestion)
+            console.log("currentQuestion", currentQuestion)
+        }
     }, [currentQuestion])
+
+    const saveQuestion = (ev) => {
+        ev.preventDefault()
+        isLoading(true)
+        /*const numberOption = currentQuestion.mentiOptions.length === 0 ? 1 : currentQuestion.mentiOptions.length + 1
+        const option = {"option":"Opción " + numberOption};
+        
+        createOption(form.id, token, currentQuestion.id, option)
+        .then(resp=> {
+            const response = parsePayload(resp)
+            console.log("currentQuestion", currentQuestion)
+            fetchAnswerQuestion()
+        })
+        .catch(err => console.log(err))*/
+        isLoading(false)
+
+        console.log("saveQuestion")
+    }
 
 
     return (
@@ -78,25 +96,20 @@ const RightBar = ({slides, currentQuestion, addNewQuestion}) =>
                 </FormControl>
                 <FormControl>
                     <FormLabel w={"300px"}>Tu pregunta</FormLabel>
-                    <Input type='text' value={input} onChange={handleChangeQuestion} />
-                    {!isError ? (
-                        <FormHelperText>
-                        Ingresá el titulo de tu pregunta.
-                        </FormHelperText>
-                    ) : (
-                        <FormErrorMessage>Nombre de pregunta es requerido.</FormErrorMessage>)}
+                    <Option id={currentQuestion.id} value={currentQuestion.question} />
                 </FormControl>
+
                 <FormControl>
                     <FormLabel w={"300px"}>Opciones</FormLabel>
                     {
                         currentQuestion 
-                        ? currentQuestion.mentiOptions.map( question => <Option key={question.id} question={question} /> )
+                        ? currentQuestion.mentiOptions.map( question => <Option key={question.id} id={question.id} value={question.name} /> )
                         : null 
                     }
-
-
-                    <Input type='text' value={input} onChange={ev=>console.log("....")}></Input>
-                    <CustomButton bg={"#CBD5E0"} icon={HiPlus} text="Agregá nueva opción" onClick={ev=>addNewQuestion(ev)} />
+                    <Flex gap={2}>
+                        <CustomButton bg={"#CBD5E0"} icon={HiPlus} text="Agregá opción" onClick={ev=>addNewOption(ev, currentQuestion.id)} />
+                        <CustomButton colorScheme={"teal"}  icon={FiSave} text="Guardar" onClick={ev=>saveQuestion(ev)} />
+                    </Flex>
                     
                     
                 </FormControl>
@@ -223,8 +236,11 @@ const EditPresentation = () => {
         const fetchFormByCode = (code, token) => {
             isLoading(true)
             getFormByCode(code, token)
-            .then(resp=>{             
-                setForm(parsePayload(resp))
+            .then(resp=>{     
+                const form = parsePayload(resp);        
+                setForm(form)
+                setQuestions(form.questions)
+                fetchAnswerQuestion()
             })
             .catch(err=>console.log(err))
             isLoading(false)
@@ -235,10 +251,10 @@ const EditPresentation = () => {
             fetchFormByCode(code, token)
         }
         
-        if(form && !loading){
-            fetchQuestionsFormByFormId();
-            fetchAnswerQuestion();
-        }
+        //if(form && !loading){
+        //    fetchQuestionsFormByFormId();
+        //    fetchAnswerQuestion();
+        //}
         
     }, [form]);
     
@@ -266,21 +282,19 @@ const EditPresentation = () => {
         isLoading(false)
     }
 
-    const addNewOption = (ev) => {
+    const addNewOption = (ev, currentQuestionId) => {
         ev.preventDefault()
         const numberOption = currentQuestion.mentiOptions.length === 0 ? 1 : currentQuestion.mentiOptions.length + 1
         const option = {"option":"Opción " + numberOption};
         isLoading(true)
-        createOption(form.id, token, currentQuestion.id, option)
+        createOption(form.id, token, currentQuestionId, option)
         .then(resp=> {
             const response = parsePayload(resp)
-            console.log(response)
+            console.log("currentQuestion", currentQuestion)
             fetchAnswerQuestion()
         })
         .catch(err => console.log(err))
         isLoading(false)
-
-        //console.log("addNewQuestion")
     }
 
     const deleteSlide = (questionId) => {
@@ -295,11 +309,28 @@ const EditPresentation = () => {
         isLoading(false)
     }
 
+    const updateCurrentQuestion = (questionId) => {
+        isLoading(true)
+        updateNewCurrentQuestion(questionId, form.id, token)
+        .then(resp=>{
+            const form = parsePayload(resp);
+            setForm(form);
+            const question = form.questions.find(question => question.id === questionId);
+            setCurrentQuestion(question)
+            //console.log("currentQuestion", currentQuestion)
+        })
+        .catch(err=>console.log(err))
+        isLoading(false)
+    }
+
     const handleCreateNewSlide = (question, slideId, onClose) =>{
         if(form){
             isLoading(true)
             createQuestion(form.id, token, slideId, question)   
             .then(resp=>{
+                const newQuestion = parsePayload(resp);
+                console.log("handleCreateNewSlide", newQuestion)
+                updateCurrentQuestion(newQuestion.id)
                 onClose();
                 fetchQuestionsFormByFormId();
             })
@@ -313,9 +344,9 @@ const EditPresentation = () => {
             <Navbar/>
             <BottomNavbar slides={slides} newSlide={handleCreateNewSlide} />
             <Flex flexDir="row" paddingTop={5} h={"80vh"}>
-                <LeftBar formId={5} questions={questions} deleteSlide={deleteSlide} setCurrentQuestion={setCurrentQuestion}/>
+                <LeftBar questions={questions} deleteSlide={deleteSlide} updateCurrentQuestion={updateCurrentQuestion}/>
                 <MainContent/>
-                <RightBar slides={slides} currentQuestion={currentQuestion} addNewQuestion={addNewOption}/>
+                <RightBar slides={slides} currentQuestion={currentQuestion} addNewOption={addNewOption} setCurrentQuestion={setCurrentQuestion}/>
             </Flex>
         </Flex>
     )

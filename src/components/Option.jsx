@@ -1,9 +1,9 @@
 import { useState } from "react"
-import { Input } from '@chakra-ui/react'
+import { Input, FormLabel } from '@chakra-ui/react'
 
-const Option = ({question}) =>{
+const Option = ({id, value}) =>{
 
-    const [name, setName] = useState(question.name);
+    const [name, setName] = useState(value);
 
     const handleChangeOption = (ev) => {
         ev.preventDefault()
@@ -11,7 +11,9 @@ const Option = ({question}) =>{
     }
 
     return (
-        <Input type='text' onChange={ev=>handleChangeOption(ev)} placeholder={name} value={name} />
+        <>
+            <Input id={id} type='text' onChange={ev=>handleChangeOption(ev)} placeholder={name} value={name} />
+        </>
     )
 }
 

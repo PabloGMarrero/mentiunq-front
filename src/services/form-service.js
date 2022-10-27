@@ -66,4 +66,14 @@ const createOption = (formId, token, questionId, option) => {
     return axios.patch(API_URL+"/"+formId+"/question/"+questionId, option, config);
 }
 
-export { createForm, createQuestion, getQuestionsByFormId as getQuestionsById, deleteQuestionById, getFormByCode, createOption }
+const updateNewCurrentQuestion = (questionId, formId, token) => {
+    const config = {
+        headers:{
+            "Authorization": "Bearer "+ token
+        }
+    };
+
+    return axios.patch(API_URL+"/"+formId+"/current/question/"+questionId, {}, config);
+}
+
+export { createForm, createQuestion, getQuestionsByFormId as getQuestionsById, deleteQuestionById, getFormByCode, createOption, updateNewCurrentQuestion }
