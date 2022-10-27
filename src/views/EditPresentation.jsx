@@ -51,9 +51,7 @@ const RightBar = ({slides, currentQuestion, addNewOption, setCurrentQuestion}) =
   
     useEffect(()=>{
         if(currentQuestion){
-            //updateCurrentQuestion(currentQuestion.id)
             setCurrentQuestion(currentQuestion)
-            console.log("currentQuestion", currentQuestion)
         }
     }, [currentQuestion])
 
@@ -289,8 +287,6 @@ const EditPresentation = () => {
         isLoading(true)
         createOption(form.id, token, currentQuestionId, option)
         .then(resp=> {
-            const response = parsePayload(resp)
-            console.log("currentQuestion", currentQuestion)
             fetchAnswerQuestion()
         })
         .catch(err => console.log(err))
@@ -317,7 +313,6 @@ const EditPresentation = () => {
             setForm(form);
             const question = form.questions.find(question => question.id === questionId);
             setCurrentQuestion(question)
-            //console.log("currentQuestion", currentQuestion)
         })
         .catch(err=>console.log(err))
         isLoading(false)
@@ -329,7 +324,6 @@ const EditPresentation = () => {
             createQuestion(form.id, token, slideId, question)   
             .then(resp=>{
                 const newQuestion = parsePayload(resp);
-                console.log("handleCreateNewSlide", newQuestion)
                 updateCurrentQuestion(newQuestion.id)
                 onClose();
                 fetchQuestionsFormByFormId();

@@ -15,17 +15,7 @@ const Voting = () => {
         getVotingQuestion(codeShare)
             .then(resp=> 
                 {
-                    const value1 = '"id":"1","name":"opcion 1"';
-                    const value2 = '"id":"2","name":"opcion 2"';
-                    const value3 = '"id":"3","name":"opcion 3 "';
-                    
-                    
-                    const q1 = parsePayload(resp)
-
-
-                    q1.mentiOptions = JSON.parse("[{"+value1+"},{"+value2+"},{"+value3+"}]");
-
-                    setQuestion(q1);
+                    setQuestion(parsePayload(resp));
                 }
             )
             .catch(err=>console.log(err))  
