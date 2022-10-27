@@ -2,10 +2,13 @@ import { Flex, Box, Text, Icon, IconButton } from '@chakra-ui/react'
 import { MdPlayArrow } from 'react-icons/md'
 import { BsTrash } from 'react-icons/bs'
 
-const Slide = ({question, deleteSlide, setCurrentQuestion, isBinDisabled}) => {
+const Slide = ({question, deleteSlide, updateCurrentQuestion, isBinDisabled}) => {
     
     return(
-        <Flex onClick={ev=>setCurrentQuestion(question)}> 
+        <Flex onClick={ev=>{
+            ev.preventDefault();
+            updateCurrentQuestion(question.id)}
+        }> 
             <Box >
                 <Flex flexDir={"column"} alignItems="center">
                     <Text fontSize='12px' fontWeight={600} >{question.id}</Text>
