@@ -27,13 +27,13 @@ const MainContent = ()=> {
     const [token] = useState(localStorage.getItem("accessToken"));
     const [searchString, setSearchString] = useState("");
 
-    useEffect(()=>{  
-        const fetchData = () => {  
-            getById(user.userId, token)
-            .then(resp=> setForms(parsePayload(resp)) )
-            .catch(err=>console.log(err))
-        }
+    const fetchData = () => {  
+        getById(user.userId, token)
+        .then(resp=> setForms(parsePayload(resp)) )
+        .catch(err=>console.log(err))
+    }
 
+    useEffect(()=>{  
         if (user){
             fetchData();
         }       
@@ -60,7 +60,7 @@ const MainContent = ()=> {
                 <Flex bg="white" w="95%" h={"5%"} m={"10px"} justifyContent="left" flexDir={"column"}>
                     <Flex flexDir={"row"}> 
                         <Flex flexDir={"row"} gap={"5px"} w="80%"> 
-                            <CustomButton colorScheme={"messenger"} icon={HiPlus} text="Nueva presentación" 
+                            <CustomButton colorScheme='blue' variant='solid' icon={HiPlus} text="Nueva presentación" 
                                 onClick={(ev)=>handleCreatePresentation(ev)} />
                         </Flex>
                         
@@ -87,7 +87,7 @@ const MainContent = ()=> {
                                 <Tbody>
                                     {forms ? forms.map( form => { 
                                         if(form.name.toLowerCase().startsWith(searchString.toLowerCase()))
-                                            return <TableRow key = {form.code} form = {form}/> 
+                                            return <TableRow key = {form.code} form = {form} fetch={fetchData}/> 
                                     }): null }
                                 </Tbody>
                             </Table>
