@@ -60,7 +60,7 @@ const MainContent = ()=> {
                 <Flex bg="white" w="95%" h={"5%"} m={"10px"} justifyContent="left" flexDir={"column"}>
                     <Flex flexDir={"row"}> 
                         <Flex flexDir={"row"} gap={"5px"} w="80%"> 
-                            <CustomButton colorScheme={"messenger"} icon={HiPlus} text="Nueva presentación" 
+                            <CustomButton colorScheme='blue' variant='solid' icon={HiPlus} text="Nueva presentación" 
                                 onClick={(ev)=>handleCreatePresentation(ev)} />
                         </Flex>
                         

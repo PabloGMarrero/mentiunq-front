@@ -11,6 +11,7 @@ import { parsePayload } from '../utils/parse-payload'
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { Select } from "chakra-react-select"
 import Slide from '../components/Slide';
+import PptComponent from '../components/PptComponent.jsx';
 import { HiPlus } from 'react-icons/hi'
 import { BiExport } from 'react-icons/bi'
 import { FiSave } from 'react-icons/fi'
@@ -35,11 +36,18 @@ const LeftBar = ({questions, deleteSlide, updateCurrentQuestion}) =>
     )
 }
 
-const MainContent = ()=> {
+const MainContent = ({currentQuestion, setCurrentQuestion})=> {
+    console.log("mainContent",currentQuestion);
+    useEffect(()=>{
+        if(currentQuestion){
+            setCurrentQuestion(currentQuestion)
+        }
+    }, [currentQuestion])
+
     return (
         <Square bg="lightgray" w="65%" >
             <Flex bg="white" w="100%" h={"80%"} m={"0 50px 100px 50px"} justifyContent="center">
-                <Text>Contenido principal</Text>
+                <PptComponent currentQuestion={currentQuestion}/>
             </Flex>
         </Square>
     )
@@ -47,6 +55,7 @@ const MainContent = ()=> {
 
 const RightBar = ({slides, currentQuestion, addNewOption, setCurrentQuestion}) =>
 {
+    console.log("rightBar", currentQuestion);
     const [loading, isLoading] = useState(false)
   
     useEffect(()=>{
@@ -339,7 +348,7 @@ const EditPresentation = () => {
             <BottomNavbar slides={slides} newSlide={handleCreateNewSlide} />
             <Flex flexDir="row" paddingTop={5} h={"80vh"}>
                 <LeftBar questions={questions} deleteSlide={deleteSlide} updateCurrentQuestion={updateCurrentQuestion}/>
-                <MainContent/>
+                <MainContent currentQuestion={currentQuestion} setCurrentQuestion={setCurrentQuestion}/>
                 <RightBar slides={slides} currentQuestion={currentQuestion} addNewOption={addNewOption} setCurrentQuestion={setCurrentQuestion}/>
             </Flex>
         </Flex>
