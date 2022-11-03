@@ -65,7 +65,7 @@ const deleteQuestionById = (formId, questionId, token) => {
                 "Authorization": "Bearer "+ token
         }
     }
-    return axios.delete(API_URL+"/"+formId+"?questionId="+questionId, config)
+    return axios.delete(API_URL+"/"+formId+"/question/"+questionId, config)
 }
 
 const getFormByCode = (code, token) => {
