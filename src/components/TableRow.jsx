@@ -20,14 +20,6 @@ const TableRow = (props) => {
     const handleCloseShowDelete = () => setShowDelete(false);
     const handleOpenShowDelete = () => setShowDelete(true);
 
-    const handleShowPresentation = () => {
-        
-    }
-
-    const handleShowResults = () => {
-        
-    }
-
     const handleEditFormName = (name) => {
         renameFormById(props.form.id, token, name)
             .then(resp=>{
@@ -87,8 +79,8 @@ const TableRow = (props) => {
                             ...
                         </MenuButton>
                         <MenuList>
-                            <MenuItem onClick={""}>Presentar</MenuItem>
-                            <MenuItem>Ver resultados</MenuItem>
+                            <MenuItem as={ReachLink} to={'/app/presentation/'+props.form.code+'/'} >Presentar</MenuItem>
+                            <MenuItem as={ReachLink} to={'/app/results/'+props.form.code+'/'} >Ver resultados</MenuItem>
                             <MenuItem onClick={handleOpenShowShare}>Compartir</MenuItem>
                             <ModalWindow 
                                 show={showShare} 
