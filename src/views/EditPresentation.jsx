@@ -37,7 +37,6 @@ const LeftBar = ({questions, deleteSlide, updateCurrentQuestion}) =>
 }
 
 const MainContent = ({currentQuestion, setCurrentQuestion})=> {
-    console.log("mainContent",currentQuestion);
     useEffect(()=>{
         if(currentQuestion){
             setCurrentQuestion(currentQuestion)
@@ -55,9 +54,9 @@ const MainContent = ({currentQuestion, setCurrentQuestion})=> {
 
 const RightBar = ({slides, currentQuestion, addNewOption, setCurrentQuestion}) =>
 {
-    console.log("rightBar", currentQuestion);
-    const [loading, isLoading] = useState(false)
-  
+    const [loading, isLoading] = useState(false);
+    const [name, setName] = useState(currentQuestion.question);
+
     useEffect(()=>{
         if(currentQuestion){
             setCurrentQuestion(currentQuestion)
@@ -82,6 +81,10 @@ const RightBar = ({slides, currentQuestion, addNewOption, setCurrentQuestion}) =
         console.log("saveQuestion")
     }
 
+    const handleChangeName = (ev) => {
+        ev.preventDefault()
+        setName(ev.target.value)
+    }
 
     return (
         <Box flex='1'>
@@ -103,7 +106,12 @@ const RightBar = ({slides, currentQuestion, addNewOption, setCurrentQuestion}) =
                 </FormControl>
                 <FormControl>
                     <FormLabel w={"300px"}>Tu pregunta</FormLabel>
-                    <Option id={currentQuestion.id} value={currentQuestion.question} />
+                    <Input id={currentQuestion.id} type='text' onChange={ev=>handleChangeName(ev)} 
+                        placeholder={currentQuestion.question} 
+                        value={currentQuestion.question} 
+                        name={currentQuestion.question}
+                    />
+                    
                 </FormControl>
 
                 <FormControl>
