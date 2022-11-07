@@ -1,23 +1,18 @@
-import { Text, Stack, VStack, Box, Heading } from '@chakra-ui/react'
-import PptComponent from '../components/PptComponent.jsx';
-import { getQuestionsById } from '../services/form-service';
-import { useState } from 'react';
+import { Text, Stack, VStack, Box, Heading, RadioGroup, Flex } from '@chakra-ui/react'
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { parsePayload } from '../utils/parse-payload'
+import { getFormByCode } from '../services/form-service';
 
 const Result = () => {
-    const [questions, setQuestions] = useState([]);
     const [token] = useState(localStorage.getItem("accessToken"));
-    const formId = useParams().hash;
-
-    const fetchQuestionsFormByFormId = () => {
-        getQuestionsById(formId, token)
-        .then(resp=>{      
-            setQuestions(parsePayload(resp))
-            console.log(resp);
-        })
-        .catch(err=>console.log(err))
-    }
+    const formCode = useParams().hash;
+    const [questions, setQuestions] = useState([]);
     
+    useEffect(() => {
+        fetchQuestionsFormByFormId();
+    }, []);
+
     const Card = ({title, desc, wide}) => {        
             return <>
                 <Box p={5} w={wide} shadow='md' borderWidth='2px' >
@@ -27,14 +22,41 @@ const Result = () => {
               </>
     }
 
-    const CardList = () => {        
+    const fetchQuestionsFormByFormId = () => {
+        getFormByCode(formCode, token)
+        .then(resp=>{
+            setQuestions(parsePayload(resp).questions);
+            return questions;
+        })
+        .catch(err=>console.log(err))
+    }
+
+    const CardList = ({currentQuestions}) => {        
         return <>
             <Stack spacing={8} direction='Column'>  
                 <Stack p={2} spacing={8} direction='row'>
                     {(() => {        
                         let indents = [];                
-                        for (question in questions) {
-                            indents.push(<PptComponent currentQuestion={question}/>)
+                        for (let question in currentQuestions) {
+                            indents.push(
+                                <Box key={currentQuestions[question].id} p={5} w="30%" h="20vh" shadow='md' borderWidth='2px' >
+                                    <Flex justifyContent="left" >
+                                        <Text fontSize='xl' textAlign={"center"} fontWeight='semibold'> 
+                                            {currentQuestions[question].question ? currentQuestions[question].question : "Sin pregunta" }
+                                        </Text>
+                                    </Flex>
+                                    <Flex justifyContent="left" >
+                                        <Flex flexDir='column' gap= "1px" >                                            
+                                                {
+                                                    currentQuestions[question].mentiOptions ? currentQuestions[question].mentiOptions.map(
+                                                        option => 
+                                                            {return <Text textAlign={"left"}> {option.name}</Text>}
+                                                    ): null 
+                                                }                                            
+                                        </Flex>
+                                    </Flex>
+                                </Box>
+                            )
                         }
                         return indents;                        
                     })()}
@@ -42,12 +64,12 @@ const Result = () => {
             </Stack>
           </>
     }
-    
+
     return (
         <VStack w="100%" h="90vh" spacing={8}>
                 <Heading w="50%" textAlign={"left"} fontSize='4xl' mt={4}>Resultados de la presentación</Heading>
                 <Box w="50%" p={5} shadow='md' borderWidth='2px' justifyContent={"left"} >
-                    <Heading fontSize='xl' mt={4}>Estadisticas de la presentación</Heading>
+                    <Heading fontSize='xl' mt={4}>Estadísticas de la presentación</Heading>
                     <Stack spacing={8} direction='row'>    
                         <Card wide="50%" title={"105"} desc={"Votos"}/>
                         <Card wide="50%" title={"10"} desc={"Slides"}/>
@@ -63,7 +85,16 @@ const Result = () => {
                 </Box>
                 <Box w="50%" p={5} shadow='md' borderWidth='2px' justifyContent={"left"} >
                     <Heading fontSize='xl' mt={4}>Descargar Slides</Heading>
-                    <CardList questions={fetchQuestionsFormByFormId()}/>
+                    {(() => {        
+                        let indents = [];
+                        let tempQuestions = questions;
+                        while (tempQuestions.length > 0) {
+                            indents.push(<CardList key={tempQuestions.at(0).id} currentQuestions={tempQuestions.slice(0, 3)}/>);
+                            tempQuestions = tempQuestions.slice(3);
+                        }
+                        return indents;                        
+                    })()}
+                    
                 </Box>
         </VStack>
         
