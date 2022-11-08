@@ -98,6 +98,25 @@ const updateNewCurrentQuestion = (questionId, formId, token) => {
     return axios.patch(API_URL+"/"+formId+"/current/question/"+questionId, {}, config);
 }
 
+const updateQuestionName = (formId, token, questionId, request) => {
+    const config = {
+        headers:{
+            "Authorization": "Bearer "+ token
+        }
+    };
+
+    return axios.patch(API_URL+"/"+formId+"/update/question/"+questionId, request, config);
+}
+
+const deleteOptionById = (formId, optionId, token) => {
+    const config = (token) ={
+        headers:{
+                "Authorization": "Bearer "+ token
+        }
+    }
+    return axios.delete(API_URL+"/"+formId+"/option/"+optionId, config)
+}
+
 export { 
     createForm, 
     createQuestion, 
@@ -107,4 +126,7 @@ export {
     getFormByCode, 
     createOption, 
     updateNewCurrentQuestion,
-    renameFormById}
+    renameFormById,
+    updateQuestionName,
+    deleteOptionById
+}

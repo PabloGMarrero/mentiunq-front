@@ -6,8 +6,9 @@ const Slide = ({question, deleteSlide, updateCurrentQuestion, isBinDisabled}) =>
     
     return(
         <Flex onClick={ev=>{
-            ev.preventDefault();
-            updateCurrentQuestion(question.id)}
+                ev.preventDefault();
+                updateCurrentQuestion(question.id)
+            }
         }> 
             <Box >
                 <Flex flexDir={"column"} alignItems="center">
