@@ -1,6 +1,7 @@
-import { Box, Flex, Text, Divider, ButtonGroup, IconButton, Icon, Alert, AlertTitle, AlertDescription, Button } from '@chakra-ui/react'
+import { Box, Flex, Text, Divider, Icon, Alert, AlertTitle, AlertDescription, Button } from '@chakra-ui/react'
 import { BsCheck } from 'react-icons/bs';
 import { AiOutlineQuestionCircle } from 'react-icons/ai'
+import { HiOutlineArrowLeft } from 'react-icons/hi'
 
 import { GoogleLogin } from 'react-google-login';
 import configData from "../../config.json";
@@ -8,6 +9,7 @@ import { useEffect } from 'react';
 import { gapi } from 'gapi-script';
 import { useAuth } from '../contexts/auth-context'
 import { useNavigate } from 'react-router-dom';
+import CustomButton from '../components/CustomButton';
 
 const handleFailedLogin = () => {
     <Alert status='error'>
@@ -76,12 +78,21 @@ const TopNavbar = () => {
                 <Divider orientation='vertical' />
   
                 
-                {authed ? <UserMenu navigate={navigate}/> : <GoogleLogin
-                                                            clientId={configData.GOOGLE_OAUTH_CLIENTID}
-                                                            buttonText="Login"
-                                                            onSuccess={(request)=>(handleSuccessfullLogin(request, auth, navigate))}
-                                                            onFailure={handleFailedLogin}
-                                                        />}
+                {authed ? 
+                        <>
+                            <CustomButton colorScheme='blue' variant='solid' icon={HiOutlineArrowLeft} text="Presentaciones" 
+                            onClick={()=>navigate("/app")} />
+                            <UserMenu navigate={navigate}/> 
+                        </>
+                    
+                    : 
+                
+                        <GoogleLogin
+                            clientId={configData.GOOGLE_OAUTH_CLIENTID}
+                            buttonText="Login"
+                            onSuccess={(request)=>(handleSuccessfullLogin(request, auth, navigate))}
+                            onFailure={handleFailedLogin}
+                        />}
             </Flex>
         </Flex>
     )

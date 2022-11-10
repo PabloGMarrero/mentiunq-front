@@ -20,6 +20,8 @@ const TableRow = (props) => {
     const handleCloseShowDelete = () => setShowDelete(false);
     const handleOpenShowDelete = () => setShowDelete(true);
 
+    
+
     const handleEditFormName = (name) => {
         renameFormById(props.form.id, token, name)
             .then(resp=>{
@@ -69,8 +71,8 @@ const TableRow = (props) => {
             <Tr>
                 <Td><Link as={ReachLink} to={'/app/presentation/'+props.form.code+'/edit'} >{props.form.name}</Link ></Td>
                 <Td>{props.form.codeShare}</Td>
-                <Td>{props.form.updateDate}</Td>
-                <Td>{props.form.creationDate}</Td>
+                <Td>{new Date(props.form.updateDate).toLocaleString("es-AR")}</Td>
+                <Td>{new Date(props.form.creationDate).toLocaleString("es-AR")}</Td>
                 <Td>
                     <Menu>
                         <MenuButton as={IconButton}

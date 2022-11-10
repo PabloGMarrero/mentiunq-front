@@ -78,6 +78,16 @@ const getFormByCode = (code, token) => {
     return axios.get(API_URL+"/code/"+code, config)
 }
 
+const getResultsByFormCode = (code, token) => {
+    const config = {
+        headers:{
+            "Authorization": "Bearer "+ token
+        }
+    };
+
+    return axios.get(API_URL+"/code/"+code+"/results", config)
+}
+
 const createOption = (formId, token, questionId, option) => {
     const config = (token) ={
         headers:{
@@ -107,4 +117,5 @@ export {
     getFormByCode, 
     createOption, 
     updateNewCurrentQuestion,
-    renameFormById}
+    renameFormById,
+    getResultsByFormCode}
