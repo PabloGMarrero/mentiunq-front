@@ -46,12 +46,6 @@ const LeftBar = ({questions, deleteSlide, updateCurrentQuestion}) =>
 }
 
 const MainContent = ({currentQuestion, setCurrentQuestion})=> {
-    /*useEffect(()=>{
-        if(currentQuestion){
-            setCurrentQuestion(currentQuestion)
-        }
-    }, [currentQuestion])*/
-
     return (
         <Square bg="lightgray" w="65%" >
             <Flex bg="white" w="100%" h={"80%"} m={"0 50px 100px 50px"} justifyContent="center">
@@ -68,7 +62,6 @@ const RightBar = ({slides, currentQuestion, addNewOption, setCurrentQuestion, ha
 
     useEffect(()=>{
         if(currentQuestion){
-            //setCurrentQuestion(currentQuestion)
             setName(currentQuestion.question)
         }
     }, [currentQuestion])
@@ -366,10 +359,7 @@ const EditPresentation = () => {
             if (option.id == id){
                 option.name = name
             }
-        })
-        //setCurrentQuestion(newCurrent);
-        console.log("currentQuestion", currentQuestion)
-        
+        })        
     }
 
     const saveQuestion = (ev, newQuestionName) => {
