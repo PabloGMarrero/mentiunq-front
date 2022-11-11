@@ -65,7 +65,7 @@ const deleteQuestionById = (formId, questionId, token) => {
                 "Authorization": "Bearer "+ token
         }
     }
-    return axios.delete(API_URL+"/"+formId+"?questionId="+questionId, config)
+    return axios.delete(API_URL+"/"+formId+"/question/"+questionId, config)
 }
 
 const getFormByCode = (code, token) => {
@@ -98,6 +98,35 @@ const updateNewCurrentQuestion = (questionId, formId, token) => {
     return axios.patch(API_URL+"/"+formId+"/current/question/"+questionId, {}, config);
 }
 
+const updateQuestionName = (formId, token, questionId, request) => {
+    const config = {
+        headers:{
+            "Authorization": "Bearer "+ token
+        }
+    };
+
+    return axios.patch(API_URL+"/"+formId+"/update/question/"+questionId, request, config);
+}
+
+const deleteOptionById = (formId, optionId, token) => {
+    const config = (token) ={
+        headers:{
+                "Authorization": "Bearer "+ token
+        }
+    }
+    return axios.delete(API_URL+"/"+formId+"/option/"+optionId, config)
+}
+
+const updateOptionName = (formId, token, optionId, request) => {
+    const config = {
+        headers:{
+            "Authorization": "Bearer "+ token
+        }
+    };
+
+    return axios.patch(API_URL+"/"+formId+"/update/option/"+optionId, request, config);
+}
+
 export { 
     createForm, 
     createQuestion, 
@@ -107,4 +136,8 @@ export {
     getFormByCode, 
     createOption, 
     updateNewCurrentQuestion,
-    renameFormById}
+    renameFormById,
+    updateQuestionName,
+    deleteOptionById,
+    updateOptionName
+}
