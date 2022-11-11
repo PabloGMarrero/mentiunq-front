@@ -117,6 +117,16 @@ const deleteOptionById = (formId, optionId, token) => {
     return axios.delete(API_URL+"/"+formId+"/option/"+optionId, config)
 }
 
+const updateOptionName = (formId, token, optionId, request) => {
+    const config = {
+        headers:{
+            "Authorization": "Bearer "+ token
+        }
+    };
+
+    return axios.patch(API_URL+"/"+formId+"/update/option/"+optionId, request, config);
+}
+
 export { 
     createForm, 
     createQuestion, 
@@ -128,5 +138,6 @@ export {
     updateNewCurrentQuestion,
     renameFormById,
     updateQuestionName,
-    deleteOptionById
+    deleteOptionById,
+    updateOptionName
 }

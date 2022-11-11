@@ -13,7 +13,8 @@ import { createQuestion,
     createOption, 
     updateNewCurrentQuestion,
     updateQuestionName,
-    deleteOptionById
+    deleteOptionById,
+    updateOptionName
 } from '../services/form-service';
 import { parsePayload } from '../utils/parse-payload'
 import { useState, useEffect, useRef, useMemo } from 'react';
@@ -60,7 +61,7 @@ const MainContent = ({currentQuestion, setCurrentQuestion})=> {
     )
 }
 
-const RightBar = ({slides, currentQuestion, addNewOption, setCurrentQuestion, handleChangeOptionName, saveQuestion, deleteOption}) =>
+const RightBar = ({slides, currentQuestion, addNewOption, setCurrentQuestion, handleChangeOptionName, saveQuestion, deleteOption, saveNewOptionName}) =>
 {
     const [loading, isLoading] = useState(false);
     const [name, setName] = useState('');
@@ -75,6 +76,12 @@ const RightBar = ({slides, currentQuestion, addNewOption, setCurrentQuestion, ha
     const handleChangeName = (ev) => {
         ev.preventDefault()
         setName(ev.target.value)
+    }
+
+    const handleEnterEvent = (ev) => {
+        if (ev.key === 'Enter') {
+            saveQuestion(ev, name);
+        }
     }
 
     return (
@@ -97,7 +104,9 @@ const RightBar = ({slides, currentQuestion, addNewOption, setCurrentQuestion, ha
                 </FormControl>
                 <FormControl>
                     <FormLabel w={"300px"}>Tu pregunta</FormLabel>
-                    <Input id={currentQuestion.id} type='text' onChange={ev=>handleChangeName(ev)} 
+                    <Input id={currentQuestion.id} type='text' onChange={ev=>handleChangeName(ev)}
+                        onBlur={ev=>saveQuestion(ev, name)}
+                        onKeyDown={ev=>handleEnterEvent(ev)}
                         placeholder={name} 
                         value={name} 
                         name={name}
@@ -109,7 +118,16 @@ const RightBar = ({slides, currentQuestion, addNewOption, setCurrentQuestion, ha
                     <FormLabel w={"300px"}>Opciones</FormLabel>
                     {
                         currentQuestion 
-                        ? currentQuestion.mentiOptions.map( option => <Option key={option.id} id={option.id} value={option.name} changeOptionName={handleChangeOptionName} deleteOption={deleteOption} /> )
+                        ? currentQuestion.mentiOptions.map( 
+                            option => <Option 
+                                        key={option.id} 
+                                        id={option.id} 
+                                        value={option.name} 
+                                        changeOptionName={handleChangeOptionName} 
+                                        deleteOption={deleteOption} 
+                                        saveNewOptionName={saveNewOptionName}
+                                        /> 
+                            )
                         : null 
                     }
                     <Flex gap={2}>
@@ -357,16 +375,14 @@ const EditPresentation = () => {
     const saveQuestion = (ev, newQuestionName) => {
         ev.preventDefault()
         isLoading(true)
+
         const request = {
-            question: newQuestionName,
-            slideId: 0,
-            options: currentQuestion.mentiOptions
+            question: newQuestionName
         }
 
         updateQuestionName(form.id, token, currentQuestion.id, request)
         .then(resp=> {
             const question = parsePayload(resp)
-            console.log("question", question)
             setCurrentQuestion(question)
         })
         .catch(err => console.log(err))
@@ -377,12 +393,22 @@ const EditPresentation = () => {
         isLoading(true)
         deleteOptionById(form.id, optionId, token)
         .then(resp=> {
-            //const question = parsePayload(resp)
             fetchAnswerQuestion()
-            //setCurrentQuestion(question)
         })
         .catch(err => console.log(err))
         isLoading(false)
+    }
+
+    const saveNewOptionName = (ev, id, name) => {
+        const request ={
+            option: name
+        }
+        ev.preventDefault()
+        updateOptionName(form.id, token, id, request)
+        .then(resp=>{
+            fetchAnswerQuestion()
+        })
+        .catch(err=>console.log(err))  
     }
 
     return (
@@ -395,7 +421,8 @@ const EditPresentation = () => {
                 <RightBar slides={slides} currentQuestion={currentQuestion} addNewOption={addNewOption} setCurrentQuestion={setCurrentQuestion} 
                     handleChangeOptionName={handleChangeOptionName}
                     saveQuestion={saveQuestion}
-                    deleteOption={deleteOption}/>
+                    deleteOption={deleteOption}
+                    saveNewOptionName={saveNewOptionName}/>
             </Flex>
         </Flex>
     )
