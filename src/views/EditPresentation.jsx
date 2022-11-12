@@ -6,7 +6,16 @@ import CustomButton from '../components/CustomButton'
 import Option from '../components/Option'
 import { findAll } from '../services/slides-service';
 import { getQuestionByCodeShare } from '../services/answer-service';
-import { createQuestion, getQuestionsById, deleteQuestionById, getFormByCode, createOption, updateNewCurrentQuestion } from '../services/form-service';
+import { createQuestion, 
+    getQuestionsById, 
+    deleteQuestionById, 
+    getFormByCode, 
+    createOption, 
+    updateNewCurrentQuestion,
+    updateQuestionName,
+    deleteOptionById,
+    updateOptionName
+} from '../services/form-service';
 import { parsePayload } from '../utils/parse-payload'
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { Select } from "chakra-react-select"
@@ -37,13 +46,6 @@ const LeftBar = ({questions, deleteSlide, updateCurrentQuestion}) =>
 }
 
 const MainContent = ({currentQuestion, setCurrentQuestion})=> {
-    console.log("mainContent",currentQuestion);
-    useEffect(()=>{
-        if(currentQuestion){
-            setCurrentQuestion(currentQuestion)
-        }
-    }, [currentQuestion])
-
     return (
         <Square bg="lightgray" w="65%" >
             <Flex bg="white" w="100%" h={"80%"} m={"0 50px 100px 50px"} justifyContent="center">
@@ -53,35 +55,27 @@ const MainContent = ({currentQuestion, setCurrentQuestion})=> {
     )
 }
 
-const RightBar = ({slides, currentQuestion, addNewOption, setCurrentQuestion}) =>
+const RightBar = ({slides, currentQuestion, addNewOption, setCurrentQuestion, handleChangeOptionName, saveQuestion, deleteOption, saveNewOptionName}) =>
 {
-    console.log("rightBar", currentQuestion);
-    const [loading, isLoading] = useState(false)
-  
+    const [loading, isLoading] = useState(false);
+    const [name, setName] = useState('');
+
     useEffect(()=>{
         if(currentQuestion){
-            setCurrentQuestion(currentQuestion)
+            setName(currentQuestion.question)
         }
     }, [currentQuestion])
 
-    const saveQuestion = (ev) => {
+    const handleChangeName = (ev) => {
         ev.preventDefault()
-        isLoading(true)
-        /*const numberOption = currentQuestion.mentiOptions.length === 0 ? 1 : currentQuestion.mentiOptions.length + 1
-        const option = {"option":"Opción " + numberOption};
-        
-        createOption(form.id, token, currentQuestion.id, option)
-        .then(resp=> {
-            const response = parsePayload(resp)
-            console.log("currentQuestion", currentQuestion)
-            fetchAnswerQuestion()
-        })
-        .catch(err => console.log(err))*/
-        isLoading(false)
-
-        console.log("saveQuestion")
+        setName(ev.target.value)
     }
 
+    const handleEnterEvent = (ev) => {
+        if (ev.key === 'Enter') {
+            saveQuestion(ev, name);
+        }
+    }
 
     return (
         <Box flex='1'>
@@ -103,19 +97,35 @@ const RightBar = ({slides, currentQuestion, addNewOption, setCurrentQuestion}) =
                 </FormControl>
                 <FormControl>
                     <FormLabel w={"300px"}>Tu pregunta</FormLabel>
-                    <Option id={currentQuestion.id} value={currentQuestion.question} />
+                    <Input id={currentQuestion.id} type='text' onChange={ev=>handleChangeName(ev)}
+                        onBlur={ev=>saveQuestion(ev, name)}
+                        onKeyDown={ev=>handleEnterEvent(ev)}
+                        placeholder={name} 
+                        value={name} 
+                        name={name}
+                    />
+                    
                 </FormControl>
 
                 <FormControl>
                     <FormLabel w={"300px"}>Opciones</FormLabel>
                     {
                         currentQuestion 
-                        ? currentQuestion.mentiOptions.map( question => <Option key={question.id} id={question.id} value={question.name} /> )
+                        ? currentQuestion.mentiOptions.map( 
+                            option => <Option 
+                                        key={option.id} 
+                                        id={option.id} 
+                                        value={option.name} 
+                                        changeOptionName={handleChangeOptionName} 
+                                        deleteOption={deleteOption} 
+                                        saveNewOptionName={saveNewOptionName}
+                                        /> 
+                            )
                         : null 
                     }
                     <Flex gap={2}>
                         <CustomButton bg={"#CBD5E0"} icon={HiPlus} text="Agregá opción" onClick={ev=>addNewOption(ev, currentQuestion.id)} />
-                        <CustomButton colorScheme={"teal"}  icon={FiSave} text="Guardar" onClick={ev=>saveQuestion(ev)} />
+                        <CustomButton colorScheme={"teal"}  icon={FiSave} text="Guardar" onClick={ev=>saveQuestion(ev, name)} />
                     </Flex>
                     
                     
@@ -341,6 +351,55 @@ const EditPresentation = () => {
             isLoading(false)
         }
     }
+    
+    const handleChangeOptionName = (ev, name, id) => {
+        ev.preventDefault()
+        const newCurrent = currentQuestion.mentiOptions.forEach(option=>{
+            
+            if (option.id == id){
+                option.name = name
+            }
+        })        
+    }
+
+    const saveQuestion = (ev, newQuestionName) => {
+        ev.preventDefault()
+        isLoading(true)
+
+        const request = {
+            question: newQuestionName
+        }
+
+        updateQuestionName(form.id, token, currentQuestion.id, request)
+        .then(resp=> {
+            const question = parsePayload(resp)
+            setCurrentQuestion(question)
+        })
+        .catch(err => console.log(err))
+        isLoading(false)
+    }
+
+    const deleteOption = (optionId) => {
+        isLoading(true)
+        deleteOptionById(form.id, optionId, token)
+        .then(resp=> {
+            fetchAnswerQuestion()
+        })
+        .catch(err => console.log(err))
+        isLoading(false)
+    }
+
+    const saveNewOptionName = (ev, id, name) => {
+        const request ={
+            option: name
+        }
+        ev.preventDefault()
+        updateOptionName(form.id, token, id, request)
+        .then(resp=>{
+            fetchAnswerQuestion()
+        })
+        .catch(err=>console.log(err))  
+    }
 
     return (
         <Flex flexDir="column"  w="100%">
@@ -349,7 +408,11 @@ const EditPresentation = () => {
             <Flex flexDir="row" paddingTop={5} h={"80vh"}>
                 <LeftBar questions={questions} deleteSlide={deleteSlide} updateCurrentQuestion={updateCurrentQuestion}/>
                 <MainContent currentQuestion={currentQuestion} setCurrentQuestion={setCurrentQuestion}/>
-                <RightBar slides={slides} currentQuestion={currentQuestion} addNewOption={addNewOption} setCurrentQuestion={setCurrentQuestion}/>
+                <RightBar slides={slides} currentQuestion={currentQuestion} addNewOption={addNewOption} setCurrentQuestion={setCurrentQuestion} 
+                    handleChangeOptionName={handleChangeOptionName}
+                    saveQuestion={saveQuestion}
+                    deleteOption={deleteOption}
+                    saveNewOptionName={saveNewOptionName}/>
             </Flex>
         </Flex>
     )
