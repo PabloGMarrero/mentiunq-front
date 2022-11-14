@@ -20,13 +20,7 @@ const TableRow = (props) => {
     const handleCloseShowDelete = () => setShowDelete(false);
     const handleOpenShowDelete = () => setShowDelete(true);
 
-    const handleShowPresentation = () => {
-        
-    }
-
-    const handleShowResults = () => {
-        
-    }
+    
 
     const handleEditFormName = (name) => {
         renameFormById(props.form.id, token, name)
@@ -77,8 +71,8 @@ const TableRow = (props) => {
             <Tr>
                 <Td><Link as={ReachLink} to={'/app/presentation/'+props.form.code+'/edit'} >{props.form.name}</Link ></Td>
                 <Td>{props.form.codeShare}</Td>
-                <Td>{props.form.updateDate}</Td>
-                <Td>{props.form.creationDate}</Td>
+                <Td>{new Date(props.form.updateDate).toLocaleString("es-AR")}</Td>
+                <Td>{new Date(props.form.creationDate).toLocaleString("es-AR")}</Td>
                 <Td>
                     <Menu>
                         <MenuButton as={IconButton}
@@ -87,8 +81,8 @@ const TableRow = (props) => {
                             ...
                         </MenuButton>
                         <MenuList>
-                            <MenuItem onClick={""}>Presentar</MenuItem>
-                            <MenuItem>Ver resultados</MenuItem>
+                            <MenuItem as={ReachLink} to={'/app/presentation/'+props.form.code+'/'} >Presentar</MenuItem>
+                            <MenuItem as={ReachLink} to={'/app/results/'+props.form.code+'/'} >Ver resultados</MenuItem>
                             <MenuItem onClick={handleOpenShowShare}>Compartir</MenuItem>
                             <ModalWindow 
                                 show={showShare} 
