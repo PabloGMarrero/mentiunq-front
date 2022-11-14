@@ -123,9 +123,8 @@ const RightBar = ({slides, currentQuestion, addNewOption, setCurrentQuestion, ha
                             )
                         : null 
                     }
-                    <Flex gap={2}>
+                    <Flex margin={3}>
                         <CustomButton bg={"#CBD5E0"} icon={HiPlus} text="Agregá opción" onClick={ev=>addNewOption(ev, currentQuestion.id)} />
-                        <CustomButton colorScheme={"teal"}  icon={FiSave} text="Guardar" onClick={ev=>saveQuestion(ev, name)} />
                     </Flex>
                     
                     
