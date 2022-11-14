@@ -39,7 +39,7 @@ Esta estructura se puede ver en el archivo ```src/App.jsx```
 
 ### Archivo de configuración
 
-Dentro de la carpeta raiz se deberá crear un archivo ```config.json``` donde allí irá la configuración similar a un archivo ENV 
+Dentro de la carpeta raiz se deberá crear un archivo ```config.js``` donde allí irá la configuración similar a un archivo ENV 
 Actualmente tiene la siguiente estructura
 ```json
 {

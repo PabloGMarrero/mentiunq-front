@@ -4,7 +4,7 @@ import { AiOutlineQuestionCircle } from 'react-icons/ai'
 import { HiOutlineArrowLeft } from 'react-icons/hi'
 
 import { GoogleLogin } from 'react-google-login';
-import configData from "../../config.json";
+import { config } from "../../config";
 import { useEffect } from 'react';
 import { gapi } from 'gapi-script';
 import { useAuth } from '../contexts/auth-context'
@@ -49,7 +49,7 @@ const TopNavbar = () => {
     useEffect(()=>{
         gapi.load("client:auth2", () => {
             gapi.client.init({ 
-                clientId: configData.GOOGLE_OAUTH_CLIENTID, 
+                clientId: config.GOOGLE_OAUTH_CLIENTID, 
                 plugin_name: "ProductManager credential", 
                 scope: "email",
             }); 
@@ -88,7 +88,7 @@ const TopNavbar = () => {
                     : 
                 
                         <GoogleLogin
-                            clientId={configData.GOOGLE_OAUTH_CLIENTID}
+                            clientId={config.GOOGLE_OAUTH_CLIENTID}
                             buttonText="Login"
                             onSuccess={(request)=>(handleSuccessfullLogin(request, auth, navigate))}
                             onFailure={handleFailedLogin}
