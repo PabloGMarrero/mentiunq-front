@@ -1,11 +1,11 @@
 import { Flex } from '@chakra-ui/react'
 
 const Help = () => {
-    return(
+  return (
         <Flex>
             Help....
         </Flex>
-    )
+  )
 }
 
-export default Help;
+export default Help

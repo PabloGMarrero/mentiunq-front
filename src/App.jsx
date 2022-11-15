@@ -6,14 +6,13 @@ import Voting from './views/Voting'
 import Result from './views/Result'
 import Help from './views/Help'
 import Home from './views/Home'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ProvideAuth } from './contexts/auth-context'
 import PrivateComponent from './components/PrivateComponent'
 
-function App() {
-
+function App () {
   return (
-    <ProvideAuth>   
+    <ProvideAuth>
       <Flex margin={4}>
         <BrowserRouter>
           <Routes>
@@ -28,8 +27,8 @@ function App() {
           </Routes>
         </BrowserRouter>
       </Flex>
-    </ProvideAuth> 
+    </ProvideAuth>
   )
 }
 
-export default App;
+export default App

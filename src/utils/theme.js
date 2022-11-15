@@ -1,10 +1,10 @@
-import { extendTheme } from "@chakra-ui/react"
-import { PRIMARY, PRIMARY_DARK, PRIMARY_LIGTH, SECONDARY, SECONDARY_DARK } from './colors';
+import { extendTheme } from '@chakra-ui/react'
+import { PRIMARY, PRIMARY_DARK, PRIMARY_LIGTH, SECONDARY, SECONDARY_DARK } from './colors'
 
 const theme = extendTheme({
   fonts: {
-    heading: "Open Sans",
-    body: "Roboto",
+    heading: 'Open Sans',
+    body: 'Roboto'
   },
   colors: {
     theme: {
@@ -13,8 +13,8 @@ const theme = extendTheme({
       300: PRIMARY_LIGTH,
       400: SECONDARY,
       500: SECONDARY_DARK
-  },
- }
+    }
+  }
 })
 
-export default theme;
+export default theme

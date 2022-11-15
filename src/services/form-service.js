@@ -1,154 +1,81 @@
-import axios from 'axios';
+import axios from 'axios'
 import { REST_API_URL } from './constants'
+import { createGenericConfig } from './generic-service'
 
-const API_URL = `${REST_API_URL}/api/form`;
+const API_URL = `${REST_API_URL}/api/form`
 
 const createForm = (userId, token) => {
-    const config = {
-        headers:{
-            "Authorization": "Bearer "+ token
-        }
-    };
-
-    return axios.post(API_URL+"/user/"+userId, {}, config);
+  return axios.post(API_URL + '/user/' + userId, {}, createGenericConfig(token))
 }
 
 const createQuestion = (formId, token, slideId, question) => {
-    const config = (token) ={
-        headers:{
-                "Authorization": "Bearer "+ token
-        }
-    }
+  const questionObject = {
+    slideId,
+    question
+  }
 
-    const questionObject = {
-        slideId,
-        question
-    }
-
-    return axios.patch(API_URL+"/"+formId, questionObject, config);
+  return axios.patch(API_URL + '/' + formId, questionObject, createGenericConfig(token))
 }
 
 const getQuestionsByFormId = (formId, token) => {
-    const config = {
-        headers:{
-                "Authorization": "Bearer "+ token
-        }
-    }
-    return axios.get(API_URL+"/"+formId, config)
+  return axios.get(API_URL + '/' + formId, createGenericConfig(token))
 }
 
 const renameFormById = (formId, token, formName) => {
-    const config = (token) ={
-        headers:{
-                "Authorization": "Bearer "+ token
-        }
-    }
+  const formRequest = {
+    name: formName
+  }
 
-    const formRequest = {
-        "name": formName
-    }
-
-    return axios.patch(API_URL+"/"+formId+"/rename", formRequest, config);
+  return axios.patch(API_URL + '/' + formId + '/rename', formRequest, createGenericConfig(token))
 }
 const deleteFormById = (formId, token) => {
-    const config = (token) ={
-        headers:{
-                "Authorization": "Bearer "+ token
-        }
-    }
-    return axios.delete(API_URL+"/"+formId, config)
+  return axios.delete(API_URL + '/' + formId, createGenericConfig(token))
 }
 
 const deleteQuestionById = (formId, questionId, token) => {
-    const config = (token) ={
-        headers:{
-                "Authorization": "Bearer "+ token
-        }
-    }
-    return axios.delete(API_URL+"/"+formId+"/question/"+questionId, config)
+  return axios.delete(API_URL + '/' + formId + '/question/' + questionId, createGenericConfig(token))
 }
 
 const getFormByCode = (code, token) => {
-    const config = {
-        headers:{
-            "Authorization": "Bearer "+ token
-        }
-    };
-
-    return axios.get(API_URL+"/code/"+code, config)
+  return axios.get(API_URL + '/code/' + code, createGenericConfig(token))
 }
 
 const getResultsByFormCode = (code, token) => {
-    const config = {
-        headers:{
-            "Authorization": "Bearer "+ token
-        }
-    };
-
-    return axios.get(API_URL+"/code/"+code+"/results", config)
+  return axios.get(API_URL + '/code/' + code + '/results', createGenericConfig(token))
 }
 
 const createOption = (formId, token, questionId, option) => {
-    const config = (token) ={
-        headers:{
-                "Authorization": "Bearer "+ token
-        }
-    }
-
-    return axios.patch(API_URL+"/"+formId+"/question/"+questionId, option, config);
+  return axios.patch(API_URL + '/' + formId + '/question/' + questionId, option, createGenericConfig(token))
 }
 
 const updateNewCurrentQuestion = (questionId, formId, token) => {
-    const config = {
-        headers:{
-            "Authorization": "Bearer "+ token
-        }
-    };
-
-    return axios.patch(API_URL+"/"+formId+"/current/question/"+questionId, {}, config);
+  return axios.patch(API_URL + '/' + formId + '/current/question/' + questionId, {}, createGenericConfig(token))
 }
 
 const updateQuestionName = (formId, token, questionId, request) => {
-    const config = {
-        headers:{
-            "Authorization": "Bearer "+ token
-        }
-    };
-
-    return axios.patch(API_URL+"/"+formId+"/update/question/"+questionId, request, config);
+  return axios.patch(API_URL + '/' + formId + '/update/question/' + questionId, request, createGenericConfig(token))
 }
 
 const deleteOptionById = (formId, optionId, token) => {
-    const config = (token) ={
-        headers:{
-                "Authorization": "Bearer "+ token
-        }
-    }
-    return axios.delete(API_URL+"/"+formId+"/option/"+optionId, config)
+  return axios.delete(API_URL + '/' + formId + '/option/' + optionId, createGenericConfig(token))
 }
 
 const updateOptionName = (formId, token, optionId, request) => {
-    const config = {
-        headers:{
-            "Authorization": "Bearer "+ token
-        }
-    };
-
-    return axios.patch(API_URL+"/"+formId+"/update/option/"+optionId, request, config);
+  return axios.patch(API_URL + '/' + formId + '/update/option/' + optionId, request, createGenericConfig(token))
 }
 
-export { 
-    createForm, 
-    createQuestion, 
-    getQuestionsByFormId as getQuestionsById, 
-    deleteFormById, 
-    deleteQuestionById, 
-    getFormByCode, 
-    createOption, 
-    updateNewCurrentQuestion,
-    renameFormById,
-    getResultsByFormCode,
-    updateQuestionName,
-    deleteOptionById,
-    updateOptionName
+export {
+  createForm,
+  createQuestion,
+  getQuestionsByFormId as getQuestionsById,
+  deleteFormById,
+  deleteQuestionById,
+  getFormByCode,
+  createOption,
+  updateNewCurrentQuestion,
+  renameFormById,
+  getResultsByFormCode,
+  updateQuestionName,
+  deleteOptionById,
+  updateOptionName
 }

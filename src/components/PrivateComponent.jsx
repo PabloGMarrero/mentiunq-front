@@ -1,10 +1,10 @@
-import { Navigate } from 'react-router-dom';
-import { useAuth } from "../contexts/auth-context";
+import { Navigate } from 'react-router-dom'
+import { useAuth } from '../contexts/auth-context'
 
-const PrivateComponent = ({Component}) => {
-    const auth = useAuth()
-    
-    return auth.isLogged() ? <Component /> : <Navigate to="/" />
+const PrivateComponent = ({ Component }) => {
+  const auth = useAuth()
+
+  return auth.isLogged() ? <Component /> : <Navigate to="/" />
 }
 
-export default PrivateComponent;
+export default PrivateComponent
