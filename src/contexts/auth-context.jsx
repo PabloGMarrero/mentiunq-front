@@ -1,17 +1,18 @@
-import React, { useState, useEffect, useContext, createContext } from 'react'
-import { authenticate } from '../services/auth-service'
+import React, { useState, useEffect, useContext, createContext } from "react"
+import { authenticate } from "../services/auth-service"
 
 const authContext = createContext()
 
-export function ProvideAuth ({ children }) {
+export function ProvideAuth({ children }) {
   const auth = useProvideAuth()
-  return <authContext.Provider value={auth}> { children } </authContext.Provider>
+
+  return <authContext.Provider value={auth}> {children} </authContext.Provider>
 }
 
 export const useAuth = () => useContext(authContext)
 
-function useProvideAuth () {
-  const [user, setUser] = useState(localStorage.getItem('user'))
+function useProvideAuth() {
+  const [user, setUser] = useState(localStorage.getItem("user"))
   const [, setLoading] = useState(false)
 
   const login = (request, navigate) => {
@@ -19,39 +20,39 @@ function useProvideAuth () {
     authenticate(request)
       .then((resp) => {
         handleSubmit(resp)
-        navigate('/app')
+        navigate("/app")
       })
       .catch((err) => {
         setUser(null)
         // TODO revisar si conviene mostrar el error
         console.log(err)
-        navigate('/')
+        navigate("/")
       })
     setLoading(false)
   }
 
   const logout = (ev, navigate) => {
     setLoading(true)
-    localStorage.removeItem('accessToken')
-    localStorage.removeItem('user')
+    localStorage.removeItem("accessToken")
+    localStorage.removeItem("user")
     setLoading(false)
     setUser(null)
-    navigate('/')
+    navigate("/")
   }
 
   const isLogged = () => {
-    const user = JSON.parse(localStorage.getItem('user'))
+    const user = JSON.parse(localStorage.getItem("user"))
+
     return user?.authed === true
   }
 
-  useEffect(() => {
-  }, [])
+  useEffect(() => {}, [])
 
   return {
     user,
     login,
     logout,
-    isLogged
+    isLogged,
   }
 }
 
@@ -61,9 +62,9 @@ const handleSubmit = (resp) => {
 
   const user = {
     userId,
-    authed: true
+    authed: true,
   }
 
-  localStorage.setItem('accessToken', accessToken)
-  localStorage.setItem('user', JSON.stringify(user))
+  localStorage.setItem("accessToken", accessToken)
+  localStorage.setItem("user", JSON.stringify(user))
 }
