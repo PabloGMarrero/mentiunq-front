@@ -86,13 +86,16 @@ const TopNavbar = () => {
                         </>
                     
                     : 
-                
+                        <Flex data-cy="google-login">
                         <GoogleLogin
+                            
                             clientId={configData.GOOGLE_OAUTH_CLIENTID}
                             buttonText="Login"
                             onSuccess={(request)=>(handleSuccessfullLogin(request, auth, navigate))}
                             onFailure={handleFailedLogin}
-                        />}
+                        />
+                        </Flex>
+                        }
             </Flex>
         </Flex>
     )
@@ -100,7 +103,7 @@ const TopNavbar = () => {
 
 const Navbar = () => {
     return (    
-        <Flex flexDir={"column"} bg="white" >
+        <Flex flexDir={"column"} bg="white" data-cy="top-navbar" >
             <TopNavbar/>
         </Flex>
     )        

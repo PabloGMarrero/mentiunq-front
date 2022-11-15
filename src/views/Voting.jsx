@@ -14,7 +14,7 @@ const Voting = () => {
     
     useEffect(()=>{  
         getVotingQuestion(codeShare)
-            .then(resp=> { setQuestion(parsePayload(resp)) }
+            .then(resp=> { console.log(JSON.stringify(resp)) }
             )
             .catch(err=>setNotFound(true))  
     },[])
@@ -28,7 +28,7 @@ const Voting = () => {
     return(
         !notFound ?
             !hasVoted ?
-            <Box width={"100%"}  >
+            <Box width={"100%"} data-cy="votes-view-text" >
                 <Flex flexDir='column' gap="20px" >
                     <Flex w="100%" justifyContent="center" color='gray.700' fontWeight='semibold' letterSpacing='wide' fontSize='4xl'>                
                         MentiUNQ
