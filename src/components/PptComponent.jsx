@@ -1,14 +1,14 @@
 import { Flex, Text, Square, RadioGroup } from '@chakra-ui/react'
 import QuestionOption from '../components/QuestionOption';
 import WordCloud from '../components/WordCloud';
-import { Chart } from "react-charts";
+import MultipleChoice from '../components/MultipleChoice';
+import Ranking from '../components/Ranking';
 
 const PptComponent = ({ currentQuestion }) => {
 
     const RenderChart = ({ slideType }) => {
-        console.log(slideType)
         switch(slideType) {
-            case 'Multiple Choice':
+            case 'Multiple Choice2':
                 return <Flex justifyContent="center" flexDir='column' gap="10px" >
                     {currentQuestion.mentiOptions ? currentQuestion.mentiOptions.map(
                         option =>
@@ -19,13 +19,11 @@ const PptComponent = ({ currentQuestion }) => {
                     }
                 </Flex>
             case 'Word Cloud':
-                return <WordCloud />
-            case 'error':
-                return <Error text={text} />
-            case 'error':
-                return <Error text={text} />
-            case 'error':
-                return <Error text={text} />
+                return <WordCloud currentQuestion={currentQuestion}/>
+            case 'Multiple Choice':
+                return <MultipleChoice currentQuestion={currentQuestion}/>
+            case 'Ranking':
+                return <Ranking currentQuestion={currentQuestion}/>
             default:
                 return null
         }
@@ -38,7 +36,7 @@ const PptComponent = ({ currentQuestion }) => {
                 <Flex justifyContent="center" color='gray.700' fontWeight='semibold' letterSpacing='wide' fontSize='4xl' h={"40%"}>
                     <Text>{currentQuestion.question}</Text>
                 </Flex>
-                <Flex h={"60%"} >
+                <Flex justifyContent="center" h={"60%"} >
                     <RenderChart slideType={currentQuestion.slide.nombre}/>                        
                 </Flex>
             </Flex>

@@ -1,23 +1,36 @@
 import React from 'react';
 import { TagCloud } from 'react-tagcloud'
+import { useState, useEffect } from 'react';
 
-const data = [
-    { value: 'JavaScript', count: 38 },
-    { value: 'React', count: 30 },
-    { value: 'Nodejs', count: 28 },
-    { value: 'Express.js', count: 25 },
-    { value: 'HTML5', count: 70 },
-    { value: 'MongoDB', count: 18 },
-    { value: 'CSS3', count: 20 }
-  ]
 
-const WordCloud = () => {
+const WordCloud = ({currentQuestion}) => {
+  const [options] = useState([]);
+
+  useEffect(()=>{
+    if(currentQuestion){
+
+      if (currentQuestion.mentiOptions != undefined) {
+        processOptions(currentQuestion.mentiOptions);
+      }
+    }
+  }, [currentQuestion])
+  
+  const processOptions = (mentiOptions) => {
+    console.log(mentiOptions)
+    mentiOptions.forEach(mentiOption => {      
+      let foundElement = options.find(element => element.value.toLowerCase() === mentiOption.name.toLowerCase());
+      if (foundElement === undefined) {
+        options.push({value: mentiOption.name, count: 1});
+      } else {
+        foundElement.count = foundElement.count + 1; 
+      }  
+    })
+  };
 
     return <TagCloud 
         minSize={12}
         maxSize={70}
-        shuffle={true}
-        tags={data} />
+        tags={options} />
 
 }
 
