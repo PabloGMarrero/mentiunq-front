@@ -18,7 +18,14 @@ describe('home', () => {
     cy.get('[data-cy="home-view"]').should('have.length', 1) 
   })
 
-  it('text is not logged', () => {
+  it('text when is not logged', () => {
+    cy.get('[data-cy="home-view-text-not-logged"]').should('have.length', 1)
+    cy.get('[data-cy="home-view-text-not-logged"]').contains('Logueate para comenzar a crear tus presentaciones!') 
+  })
+
+  it('text when is logged', () => {
+    cy.loginByGoogleApi()
+    cy.get('[data-cy="google-login"]').click()
     cy.get('[data-cy="home-view-text-not-logged"]').should('have.length', 1)
     cy.get('[data-cy="home-view-text-not-logged"]').contains('Logueate para comenzar a crear tus presentaciones!') 
   })
