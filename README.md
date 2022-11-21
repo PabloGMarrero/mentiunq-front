@@ -46,3 +46,16 @@ Actualmente tiene la siguiente estructura
     "GOOGLE_OAUTH_CLIENTID": "KEY"
 }
 ```
+
+### Proyecto dockerizado
+
+El proyecto cuenta con un archivo dockerfile para que se puede levantar con una imagen docker. Como requisito se debe tener docker instalado
+ - En linux se debe seguir [este tutorial](https://docs.docker.com/engine/install/ubuntu/)
+ - En windows se debe seguir [este tutorial](https://docs.docker.com/desktop/install/windows-install/)
+ 
+Una vez instalado y configurado en la ruta raiz del proyecto se debe ejecutar los siguientes comandos
+
+- ```docker build -t mentiunq-front .``` : este comando creará una imagen basado en el archivo dockerfile llamado mentiunq-front (puede elegir otro nombre si asi lo desea).
+- ```docker run --rm -p 5173:5173 mentiunq-front```: este comando correrá la imagen creada anteriormente, mapeando el 5173 interno de docker con en el puerto 5173 (puede elegir otro) de su pc (recuerde que si modificó el nombre mentiunq-front del paso 2, acá también debe ser modificado)
+
+En caso de tener errores en linux, correr los comandos de docker anteponiendo ```sudo```
