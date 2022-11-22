@@ -7,13 +7,31 @@ ChartJS.register(...registerables);
 const Ranking = ({currentQuestion}) => {
     const ref = useRef();
 
+    const compareOptions = (a, b) => {
+      if (a.score > b.score) 
+        return -1;
+
+      if (a.score < b.score) 
+        return 1;
+
+      return 0;
+    }
+
+    const options = {
+      indexAxis: 'y',
+      plugins: {
+        legend: {
+          position: 'right',
+        }
+      },
+    };
     const dataTemplate = {
       datasetIdKey:'id',
-      labels: currentQuestion.mentiOptions.map((option) => (option.name)),
+      labels: currentQuestion.mentiOptions.sort(compareOptions).map((opt) =>(opt.name)),  
       datasets: [
           {
             label: 'Votos',
-            data: currentQuestion.mentiOptions.map((option) => (option.score)),  
+            data: currentQuestion.mentiOptions.sort(compareOptions).map((opt) =>(opt.score)),  
             backgroundColor: [
               'rgba(141,211,199)',
               'rgba(255,255,179)',
@@ -47,7 +65,7 @@ const Ranking = ({currentQuestion}) => {
       ],
   };
 
-    return (<Bar ref={ref} width={600} height={600} data={dataTemplate} />)
+    return (<Bar ref={ref} width={600} height={600} data={dataTemplate} options={options} />)
 
 };
 
