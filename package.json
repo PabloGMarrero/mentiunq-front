@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "cypress": "cypress open"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.3.1",
@@ -14,6 +15,7 @@
     "@emotion/styled": "^11.10.0",
     "axios": "^0.27.2",
     "chakra-react-select": "^4.1.4",
+    "dotenv": "^16.0.3",
     "chart.js": "^4.0.1",
     "framer-motion": "^6.5.1",
     "gapi-script": "^1.2.0",
@@ -31,6 +33,7 @@
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^2.0.1",
+    "cypress": "^11.1.0",
     "vite": "^3.0.7"
   }
 }

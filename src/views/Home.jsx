@@ -11,7 +11,7 @@ const Home = () => {
     const auth = useAuth()
 
     return(
-        <Flex flexDir="column"  w="100%">
+        <Flex flexDir="column" w="100%" data-cy="home-view" >
             <Navbar/>
             <VStack marginTop={20} spacing={30} align='center' w="100%" h="60vh" >
                 <Flex w="35%" flexDir="column">
@@ -20,9 +20,9 @@ const Home = () => {
                 </Flex >
                 <Flex >
                     {auth.isLogged() ?
-                        <CustomButton colorScheme='blue' variant='solid' icon={HiOutlineArrowLeft} text="Presentaciones" onClick={()=>navigate("/app")} />
+                        <CustomButton data-cy="home-view-text-logged" colorScheme='blue' variant='solid' icon={HiOutlineArrowLeft} text="Presentaciones" onClick={()=>navigate("/app")} />
                         : 
-                        <Text as='b' fontSize='2xl' color={"#196CFF"} textAlign={"center"}> 
+                        <Text as='b' fontSize='2xl' color={"#196CFF"} textAlign={"center"} data-cy="home-view-text-not-logged" > 
                             Logueate para comenzar a crear tus presentaciones!
                         </Text>
                     }
