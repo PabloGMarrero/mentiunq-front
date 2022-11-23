@@ -14,14 +14,18 @@
     "@emotion/styled": "^11.10.0",
     "axios": "^0.27.2",
     "chakra-react-select": "^4.1.4",
+    "chart.js": "^4.0.1",
     "framer-motion": "^6.5.1",
     "gapi-script": "^1.2.0",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.0.1",
+    "react-charts": "^3.0.0-beta.50",
     "react-dom": "^18.2.0",
     "react-google-login": "^5.2.2",
     "react-icons": "^4.4.0",
     "react-qr-code": "^2.0.8",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^6.3.0",
+    "react-tagcloud": "^2.3.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.17",
