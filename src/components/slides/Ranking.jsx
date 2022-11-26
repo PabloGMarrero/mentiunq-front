@@ -67,8 +67,8 @@ const Ranking = ({question}) => {
   };
 
     return (
-      <Flex flexDir='column'>
-        <Text textAlign={"center"} fontSize='5xl' as='b'>{question.question}</Text>
+      <Flex flexDir='column' paddingLeft={"10px"}>
+        <Text fontSize='5xl' as='b'>{question.question}</Text>
         <Bar ref={ref} width={600} height={600} data={dataTemplate} options={options} />
       </Flex>
     )

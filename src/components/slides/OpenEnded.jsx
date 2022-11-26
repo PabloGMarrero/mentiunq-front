@@ -1,32 +1,25 @@
 import React from 'react';
-import { TagCloud } from 'react-tagcloud'
 import { useState, useEffect } from 'react';
+
+import { Flex, Text } from '@chakra-ui/react'
 
 
 const OpenEnded = ({question}) => {
-  const [options] = useState([]);
+    const [heading, setHeading] = useState("");
 
-  useEffect(()=>{
-    if(question){
+    useEffect(()=>{
+        if(question){
+            setHeading(question.question);
+        }
+    }, [question])
 
-      if (question.mentiOptions != undefined) {
-        processOptions(question.mentiOptions);
-      }
-    }
-  }, [question])
-  
-  const processOptions = (mentiOptions) => {
-    mentiOptions.forEach(mentiOption => {      
-      let foundElement = options.find(element => element.value.toLowerCase() === mentiOption.name.toLowerCase());
-      if (foundElement === undefined) {
-        options.push({value: mentiOption.name, count: 1});
-      } else {
-        foundElement.count = foundElement.count + 1; 
-      }  
-    })
-  };
-
-    return < hola/>
+    return (
+        <Flex flexDir='row' margin={"50px"}>
+            <Flex flexDir='row' justifyContent={"right"} paddingLeft={"10px"}>
+                <Text fontSize='5xl' as='b'>{heading}</Text>
+            </Flex>
+        </Flex>
+      )
 
 }
 

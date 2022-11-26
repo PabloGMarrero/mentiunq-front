@@ -16,10 +16,12 @@ const Paragraph = ({question}) => {
     }, [question])
 
     return (
-        <Flex margin={"10px"}>
-            <Flex flexDir='column' paddingLeft={"10px"}>
+        <Flex margin={"50px"}>
+            <Flex flexDir='column' >
                 <Text textAlign={"center"} fontSize='5xl' as='b'>{heading}</Text>
-                <Text>{paragraph}</Text>
+                <Flex h={"20%"} margin={"100px"}>
+                    <Text>{paragraph}</Text>
+                </Flex>
             </Flex>
         </Flex>
     )

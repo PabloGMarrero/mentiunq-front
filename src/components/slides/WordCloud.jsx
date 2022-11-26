@@ -26,9 +26,9 @@ const WordCloud = ({question}) => {
   };
 
     return (
-      <Flex flexDir='column'>
+      <Flex flexDir='column' margin={"50px"}>
         <Text textAlign={"center"} fontSize='5xl' as='b'>{question.question}</Text>
-        <Flex justifyContent={"center"}>
+        <Flex margin={"80px"} justifyContent={"center"}>
           <TagCloud 
               minSize={12}
               maxSize={70}
