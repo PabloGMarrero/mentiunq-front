@@ -1,37 +1,20 @@
 import { Bar } from 'react-chartjs-2';
 import { useRef } from 'react'
+import { Flex, Text } from '@chakra-ui/react';
 import { Chart as ChartJS, registerables } from 'chart.js';
 ChartJS.register(...registerables);
 
 
-const Ranking = ({currentQuestion}) => {
+const MultipleChoice = ({question}) => {
     const ref = useRef();
 
-    const compareOptions = (a, b) => {
-      if (a.score > b.score) 
-        return -1;
-
-      if (a.score < b.score) 
-        return 1;
-
-      return 0;
-    }
-
-    const options = {
-      indexAxis: 'y',
-      plugins: {
-        legend: {
-          position: 'right',
-        }
-      },
-    };
     const dataTemplate = {
       datasetIdKey:'id',
-      labels: currentQuestion.mentiOptions.sort(compareOptions).map((opt) =>(opt.name)),  
+      labels: question.mentiOptions.map((option) => (option.name)),
       datasets: [
           {
             label: 'Votos',
-            data: currentQuestion.mentiOptions.sort(compareOptions).map((opt) =>(opt.score)),  
+            data: question.mentiOptions.map((option) => (option.score)),  
             backgroundColor: [
               'rgba(141,211,199)',
               'rgba(255,255,179)',
@@ -65,8 +48,13 @@ const Ranking = ({currentQuestion}) => {
       ],
   };
 
-    return (<Bar ref={ref} width={600} height={600} data={dataTemplate} options={options} />)
+    return (
+      <Flex flexDir='column'>
+        <Text textAlign={"center"} fontSize='5xl' as='b'>{question.question}</Text>
+        <Bar ref={ref} width={600} height={600} data={dataTemplate} />
+      </Flex>  
+    )
 
 };
 
-export default Ranking;
+export default MultipleChoice;
