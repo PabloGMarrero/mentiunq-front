@@ -8,8 +8,8 @@ const Paragraph = ({question}) => {
 
     useEffect(()=>{
         if(question){
-            if (question.mentiOptions != undefined) {
-                setHeading(question.question);
+            setHeading(question.question);
+            if (question.mentiOptions[0] != undefined) {                
                 setParagraph(question.mentiOptions[0].name)
             }
         }
