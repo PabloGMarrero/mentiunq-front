@@ -4,3 +4,4 @@ logs
 run
 
 config.js
+.env
