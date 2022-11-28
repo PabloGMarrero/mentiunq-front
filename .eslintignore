@@ -1,0 +1,7 @@
+.github/*
+node_modules
+logs
+run
+
+config.js
+.env
