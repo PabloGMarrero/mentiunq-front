@@ -16,21 +16,21 @@ const popular = [
     label: "Open ended",
     value: "3",
   },
-  {
+  /*{
     label: "Scales",
     value: "4",
-  },
+  },*/
   {
     label: "Ranking",
     value: "5",
   },
-  {
+  /*{
     label: "Q&A",
     value: "6",
-  },
+  },*/
 ]
 
-const quiz = [
+/*const quiz = [
   {
     label: "Select Answer",
     value: "7",
@@ -39,7 +39,7 @@ const quiz = [
     label: "Type Answer",
     value: "8",
   },
-]
+]*/
 
 const content = [
   {
@@ -50,7 +50,7 @@ const content = [
     label: "Paragraph",
     value: "10",
   },
-  {
+  /*{
     label: "Bullets",
     value: "11",
   },
@@ -61,12 +61,12 @@ const content = [
   {
     label: "Video",
     value: "13",
-  },
+  },*/
 ]
 
 const mock = [
   { label: "Popular Questions", options: popular },
-  { label: "Quiz Competition", options: quiz },
+  //{ label: "Quiz Competition", options: quiz },
   { label: "Content slides", options: content },
 ]
 

@@ -5,7 +5,7 @@ import { BsTrash } from "react-icons/bs"
 const Option = ({
   id,
   value,
-  changeOptionName,
+  //changeOptionName,
   deleteOption,
   saveNewOptionName,
 }) => {
@@ -14,7 +14,7 @@ const Option = ({
   const handleChangeOption = (ev) => {
     ev.preventDefault()
     setName(ev.target.value)
-    changeOptionName(ev, name, id)
+    //changeOptionName(ev, name, id)
   }
 
   const handleDeleteOption = (ev, id) => {

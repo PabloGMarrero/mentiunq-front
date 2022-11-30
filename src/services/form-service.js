@@ -97,6 +97,18 @@ const updateOptionName = (formId, token, optionId, request) => {
   )
 }
 
+const updateContent = (codeShare, token, questionId, name) => {
+  const request = {
+    question: name,
+  }
+
+  return axios.patch(
+    API_URL + "/updateContent/" + codeShare + "/question/" + questionId,
+    request,
+    createGenericConfig(token),
+  )
+}
+
 export {
   createForm,
   createQuestion,
@@ -111,4 +123,5 @@ export {
   updateQuestionName,
   deleteOptionById,
   updateOptionName,
+  updateContent,
 }

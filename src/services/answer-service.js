@@ -28,4 +28,15 @@ const vote = (formCodeShare, questionId, optionId) => {
   )
 }
 
-export { getQuestionByCodeShare, getVotingQuestion, vote }
+const addResponse = (codeShare, questionId, response) => {
+  const request = {
+    option: response,
+  }
+
+  return axios.post(
+    API_URL + "/form/" + codeShare + "/question/" + questionId + "/response",
+    request,
+  )
+}
+
+export { getQuestionByCodeShare, getVotingQuestion, vote, addResponse }

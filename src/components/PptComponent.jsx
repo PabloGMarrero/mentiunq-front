@@ -3,6 +3,7 @@ import QuestionOption from "../components/QuestionOption"
 import WordCloud from "../components/WordCloud"
 import MultipleChoice from "../components/MultipleChoice"
 import Ranking from "../components/Ranking"
+import Paragraph from "../components/Paragraph"
 
 const PptComponent = ({ currentQuestion }) => {
   const RenderChart = ({ slideType }) => {
@@ -29,6 +30,8 @@ const PptComponent = ({ currentQuestion }) => {
         return <MultipleChoice currentQuestion={currentQuestion} />
       case "Ranking":
         return <Ranking currentQuestion={currentQuestion} />
+      case "Paragraph":
+        return <Paragraph currentQuestion={currentQuestion} />
       default:
         return null
     }

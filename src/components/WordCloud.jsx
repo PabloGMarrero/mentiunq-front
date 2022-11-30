@@ -14,7 +14,6 @@ const WordCloud = ({ currentQuestion }) => {
   }, [currentQuestion])
 
   const processOptions = (mentiOptions) => {
-    console.log(mentiOptions)
     mentiOptions.forEach((mentiOption) => {
       let foundElement = options.find(
         (element) =>
