@@ -109,6 +109,14 @@ const updateContent = (codeShare, token, questionId, name) => {
   )
 }
 
+const duplicateForm = (formId, token) => {
+  return axios.post(
+    API_URL + "/duplicate/" + formId,
+    {},
+    createGenericConfig(token),
+  )
+}
+
 export {
   createForm,
   createQuestion,
@@ -124,4 +132,5 @@ export {
   deleteOptionById,
   updateOptionName,
   updateContent,
+  duplicateForm,
 }

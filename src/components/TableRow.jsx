@@ -16,7 +16,11 @@ import { Link as ReachLink } from "react-router-dom"
 import { useState } from "react"
 import ModalWindow from "../components/ModalWindow"
 import QRCode from "react-qr-code"
-import { deleteFormById, renameFormById } from "../services/form-service"
+import {
+  deleteFormById,
+  renameFormById,
+  duplicateForm,
+} from "../services/form-service"
 
 const TableRow = (props) => {
   const [token] = useState(localStorage.getItem("accessToken"))
@@ -33,6 +37,10 @@ const TableRow = (props) => {
   const handleCloseShowDelete = () => setShowDelete(false)
   const handleOpenShowDelete = () => setShowDelete(true)
 
+  const [showDuplicate, setShowDuplicate] = useState(false)
+  const handleDuplicateCloseFormShow = () => setShowDuplicate(false)
+  const handleDuplicateOpenFormShow = () => setShowDuplicate(true)
+
   const handleEditFormName = (name) => {
     renameFormById(props.form.id, token, name)
       .then((resp) => {
@@ -46,6 +54,15 @@ const TableRow = (props) => {
     deleteFormById(props.form.id, token)
       .then((resp) => {
         handleCloseShowDelete()
+        props.fetch()
+      })
+      .catch((err) => console.log(err))
+  }
+
+  const handleDuplicateForm = () => {
+    duplicateForm(props.form.id, token)
+      .then((resp) => {
+        handleDuplicateCloseFormShow()
         props.fetch()
       })
       .catch((err) => console.log(err))
@@ -123,6 +140,17 @@ const TableRow = (props) => {
               onClose={handleCloseShowShare}
               header={"Compartir"}
               message={renderShare()}
+            ></ModalWindow>
+            <MenuItem onClick={handleDuplicateOpenFormShow}>
+              Duplicar presentación
+            </MenuItem>
+            <ModalWindow
+              show={showDuplicate}
+              onClose={handleDuplicateCloseFormShow}
+              header={"Duplicar"}
+              message={"¿Desea duplicar el formulario?"}
+              renderFormat={"question"}
+              acceptFunc={handleDuplicateForm}
             ></ModalWindow>
             <MenuDivider />
             <MenuItem onClick={handleOpenShowRename}>Renombrar</MenuItem>
