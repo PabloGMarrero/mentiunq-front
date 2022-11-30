@@ -155,19 +155,25 @@ const Voting = () => {
     }
   }
 
+  const Title = () => {
+    return (
+      <Heading
+        textAlign={"center"}
+        w="100%"
+        justifyContent="center"
+        color="gray.700"
+        fontWeight="semibold"
+        letterSpacing="wide"
+        size="2xl"
+      >
+        MentiUNQ
+      </Heading>
+    )
+  }
   const AlreadyVoted = () => {
     return (
       <Box width={"100%"}>
-        <Flex
-          w="100%"
-          justifyContent="center"
-          color="gray.700"
-          fontWeight="semibold"
-          letterSpacing="wide"
-          fontSize="4xl"
-        >
-          MentiUNQ
-        </Flex>
+        <Title />
         <Flex
           w="100%"
           justifyContent="center"
@@ -184,17 +190,7 @@ const Voting = () => {
     !hasVoted ? (
       <Box width={"100%"}>
         <Flex flexDir="column" gap="20px">
-          <Heading
-            textAlign={"center"}
-            w="100%"
-            justifyContent="center"
-            color="gray.700"
-            fontWeight="semibold"
-            letterSpacing="wide"
-            size="2xl"
-          >
-            MentiUNQ
-          </Heading>
+          <Title />
           {question?.slide?.slideType?.name ? (
             <DisplayPerSlideType slideType={question.slide.slideType.name} />
           ) : null}

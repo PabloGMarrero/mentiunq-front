@@ -105,16 +105,20 @@ const Paragraph = ({ codeShare, currentQuestion, token }) => {
   }
 
   return (
-    <Textarea
-      id={currentQuestion.id}
-      type="text"
-      onChange={(ev) => setName(ev.target.value)}
-      onBlur={(ev) => handleChangeContent(ev)}
-      //onKeyDown={(ev) => handleEnterEvent(ev)}
-      placeholder={name}
-      value={name}
-      name={name}
-    />
+    <Flex>
+      <Textarea
+        id={currentQuestion.id}
+        type="text"
+        onChange={(ev) => setName(ev.target.value)}
+        onBlur={(ev) => handleChangeContent(ev)}
+        //onKeyDown={(ev) => handleEnterEvent(ev)}
+        placeholder={name}
+        value={name}
+        name={name}
+        h={"50vh"}
+        w={"30vh"}
+      />
+    </Flex>
   )
 }
 
