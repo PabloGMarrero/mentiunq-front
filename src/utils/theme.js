@@ -9,8 +9,8 @@ import {
 
 const theme = extendTheme({
   fonts: {
-    heading: "Open Sans",
-    body: "Roboto",
+    heading: `'Menti Text', 'Open Sans', sans-serif`,
+    body: `'Menti Text', 'Roboto', sans-serif`,
   },
   colors: {
     theme: {
