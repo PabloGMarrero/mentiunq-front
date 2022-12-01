@@ -8,6 +8,7 @@ import {
   AlertTitle,
   AlertDescription,
   Button,
+  Image,
 } from "@chakra-ui/react"
 import { BsCheck } from "react-icons/bs"
 import { AiOutlineQuestionCircle } from "react-icons/ai"
@@ -72,11 +73,18 @@ const TopNavbar = () => {
 
   return (
     <Flex flexDir="row" justifyContent="space-between">
-      <Box marginLeft={10} marginTop={"-10px"}>
+      <Flex
+        flexDir="row"
+        marginLeft={10}
+        marginTop={"-10px"}
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Image src="./vite.svg"></Image>
         <Text fontSize="18px" fontWeight={600}>
           MentiUNQ
         </Text>
-      </Box>
+      </Flex>
       <Flex flexDir="row" gap={2} alignItems="center">
         <Flex alignItems="center">
           <Icon as={BsCheck} color={"#48BB78"} w={6} h={6} />
