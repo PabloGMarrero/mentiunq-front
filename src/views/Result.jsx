@@ -96,16 +96,26 @@ const Result = () => {
                           : "Sin pregunta"}
                       </Text>
                     </Flex>
-                    <Flex justifyContent="left">
+                    <Flex
+                      justifyContent="left"
+                      overflowX="auto"
+                      maxW="100vw"
+                      h="90%"
+                      sx={{
+                        "::-webkit-scrollbar": {},
+                      }}
+                    >
                       <Flex flexDir="column" gap="1px">
                         {currentQuestions[question].mentiOptions
                           ? currentQuestions[question].mentiOptions.map(
                               (option) => {
                                 return (
-                                  <Text key={option.id} textAlign={"left"}>
-                                    {" "}
-                                    {option.name}
-                                  </Text>
+                                  <Box key={option.id}>
+                                    <Text textAlign={"left"}>
+                                      {" "}
+                                      {option.name}
+                                    </Text>
+                                  </Box>
                                 )
                               },
                             )

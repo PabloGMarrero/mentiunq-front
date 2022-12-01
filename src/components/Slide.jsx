@@ -17,9 +17,6 @@ const Slide = ({
     >
       <Box>
         <Flex flexDir={"column"} alignItems="center">
-          <Text fontSize="12px" fontWeight={600}>
-            {question.id}
-          </Text>
           <Icon as={MdPlayArrow} color={"#319795"} w={6} h={6} />
           <IconButton
             icon={<BsTrash />}
@@ -40,7 +37,9 @@ const Slide = ({
         rounded="xs"
         h="100px"
       >
-        <Box>Contenido...</Box>
+        <Box>
+          <Text>{question.slide.nombre}</Text>
+        </Box>
       </Flex>
     </Flex>
   )
