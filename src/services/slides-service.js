@@ -1,13 +1,4 @@
-import axios from "axios"
-import { REST_API_URL } from "./constants"
-
-const API_URL = `${REST_API_URL}/api/slide`
-
-const popular = [
-  {
-    label: "Multiple choice",
-    value: "1",
-  },
+const open = [
   {
     label: "Word Cloud",
     value: "2",
@@ -16,30 +7,19 @@ const popular = [
     label: "Open ended",
     value: "3",
   },
-  /*{
-    label: "Scales",
-    value: "4",
-  },*/
+]
+
+const close = [
+  {
+    label: "Multiple choice",
+    value: "1",
+  },
+
   {
     label: "Ranking",
     value: "5",
   },
-  /*{
-    label: "Q&A",
-    value: "6",
-  },*/
 ]
-
-/*const quiz = [
-  {
-    label: "Select Answer",
-    value: "7",
-  },
-  {
-    label: "Type Answer",
-    value: "8",
-  },
-]*/
 
 const content = [
   {
@@ -50,24 +30,12 @@ const content = [
     label: "Paragraph",
     value: "10",
   },
-  /*{
-    label: "Bullets",
-    value: "11",
-  },
-  {
-    label: "Image",
-    value: "12",
-  },
-  {
-    label: "Video",
-    value: "13",
-  },*/
 ]
 
 const mock = [
-  { label: "Popular Questions", options: popular },
-  //{ label: "Quiz Competition", options: quiz },
-  { label: "Content slides", options: content },
+  { label: "Preguntas abiertas", options: open },
+  { label: "Preguntas cerradas", options: close },
+  { label: "Slides contenido", options: content },
 ]
 
 const findAll = () => new Promise((resolve) => resolve(mock))

@@ -258,18 +258,9 @@ const RightBar = ({
 const BottomNavbar = ({ newSlide, slides }) => {
   return (
     <Flex flexDir="column">
-      <Text fontSize="13px" fontWeight={600} color="rgba(16, 24, 52, 0.5)">
-        Created by
-      </Text>
       <Flex justifyContent={"space-between"}>
         <Flex flexDir="row" gap={2}>
           <NewSlideDrawer newSlide={newSlide} slides={slides} />
-          <CustomButton bg={"#CBD5E0"} icon={BiExport} text="Import" />
-        </Flex>
-        <Flex flexDir="row">
-          <p>Examples</p>
-          <p>Themes</p>
-          <p>Settings</p>
         </Flex>
       </Flex>
     </Flex>
@@ -287,7 +278,7 @@ const NewSlideDrawer = ({ newSlide, slides }) => {
       <CustomButton
         colorScheme={"messenger"}
         icon={HiPlus}
-        text="New slide"
+        text="Nueva slide"
         onClick={onOpen}
       />
       <Drawer
@@ -300,28 +291,28 @@ const NewSlideDrawer = ({ newSlide, slides }) => {
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader borderBottomWidth="1px">
-            Create a new slide
+            Crear una nueva slide
           </DrawerHeader>
 
           <DrawerBody>
             <Stack spacing="24px">
               <Box>
-                <FormLabel htmlFor="username">Name</FormLabel>
+                <FormLabel htmlFor="username">Nombre</FormLabel>
                 <Input
                   ref={firstField}
                   id="username"
-                  placeholder="Please enter slide name"
+                  placeholder="Ingrese el nombre de la slide"
                   onChange={(ev) => setQuestionName(ev.target.value)}
                 />
               </Box>
 
               <Box>
                 <FormControl>
-                  <FormLabel w={"300px"}>Slide type</FormLabel>
+                  <FormLabel w={"300px"}>Tipo de la Slide</FormLabel>
                   <Select
                     name="slides"
                     options={slides}
-                    placeholder="Select slide type."
+                    placeholder="Elija..."
                     closeMenuOnSelect={true}
                     hasStickyGroupHeaders
                     onChange={(ev) => setSlideId(ev.value)}
@@ -333,13 +324,13 @@ const NewSlideDrawer = ({ newSlide, slides }) => {
 
           <DrawerFooter borderTopWidth="1px">
             <Button variant="outline" mr={3} onClick={onClose}>
-              Cancel
+              Cancelar
             </Button>
             <Button
               colorScheme="blue"
               onClick={(ev) => newSlide(questionName, slideId, onClose)}
             >
-              Submit
+              Agregar
             </Button>
           </DrawerFooter>
         </DrawerContent>

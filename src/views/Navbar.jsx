@@ -80,7 +80,7 @@ const TopNavbar = () => {
         justifyContent="center"
         alignItems="center"
       >
-        <Image src="./vite.svg"></Image>
+        <Image src="../../../../vite.svg"></Image>
         <Text fontSize="18px" fontWeight={600}>
           MentiUNQ
         </Text>
