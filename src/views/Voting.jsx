@@ -22,6 +22,7 @@ const Voting = () => {
   const [question, setQuestion] = useState({})
   const codeShare = useParams().hash
   const [hasVoted, setVoted] = useState(false)
+  const [alreadyVoted, setAlreadyVoted] = useState(false)
   const [notFound, setNotFound] = useState(false)
   const [value, setValue] = useState("1")
 
@@ -35,9 +36,16 @@ const Voting = () => {
   }, [])
 
   const handleVote = () => {
-    vote(codeShare, question.id, value)
-      .then((resp) => setVoted(true))
-      .catch((err) => console.log(err))
+    if (localStorage.getItem("alreadyVoted" + question.id)) {
+      setAlreadyVoted(true)
+    } else {
+      vote(codeShare, question.id, value)
+        .then((resp) => {
+          setVoted(true)
+          localStorage.setItem("alreadyVoted" + question.id, true)
+        })
+        .catch((err) => console.log(err))
+    }
   }
 
   const VotingOpen = () => {
@@ -45,12 +53,16 @@ const Voting = () => {
 
     const handleAddResponse = (ev) => {
       ev.preventDefault()
-      addResponse(codeShare, question.id, name)
-        .then((resp) => {
-          console.log(parsePayload(resp))
-          setVoted(true)
-        })
-        .catch((err) => console.log(err))
+      if (localStorage.getItem("alreadyVoted" + question.id)) {
+        setAlreadyVoted(true)
+      } else {
+        addResponse(codeShare, question.id, name)
+          .then((resp) => {
+            setVoted(true)
+            localStorage.setItem("alreadyVoted" + question.id, true)
+          })
+          .catch((err) => console.log(err))
+      }
     }
 
     return (
@@ -147,7 +159,7 @@ const Voting = () => {
     }
   }
 
-  const AlreadyVoted = () => {
+  const Voted = () => {
     return (
       <Box width={"100%"}>
         <Title />
@@ -163,16 +175,36 @@ const Voting = () => {
     )
   }
 
-  return !notFound ? (
-    !hasVoted ? (
+  const AlreadyVoted = () => {
+    return (
       <Box width={"100%"}>
-        <Flex flexDir="column" gap="20px">
-          <Title />
-          {question?.slide?.slideType?.name ? (
-            <DisplayPerSlideType slideType={question.slide.slideType.name} />
-          ) : null}
+        <Title />
+        <Flex
+          w="100%"
+          justifyContent="center"
+          fontWeight="semibold"
+          fontSize="xl"
+        >
+          <Flex gap="15px">Ya participaste en esta votación</Flex>
         </Flex>
       </Box>
+    )
+  }
+
+  return !notFound ? (
+    !alreadyVoted ? (
+      !hasVoted ? (
+        <Box width={"100%"}>
+          <Flex flexDir="column" gap="20px">
+            <Title />
+            {question?.slide?.slideType?.name ? (
+              <DisplayPerSlideType slideType={question.slide.slideType.name} />
+            ) : null}
+          </Flex>
+        </Box>
+      ) : (
+        <Voted />
+      )
     ) : (
       <AlreadyVoted />
     )

@@ -42,7 +42,6 @@ import { Select } from "chakra-react-select"
 import Slide from "../components/Slide"
 import PptComponent from "../components/PptComponent.jsx"
 import { HiPlus } from "react-icons/hi"
-import { BiExport } from "react-icons/bi"
 import { useParams } from "react-router-dom"
 
 const LeftBar = ({ questions, deleteSlide, updateCurrentQuestion }) => {
@@ -87,7 +86,6 @@ const Paragraph = ({ codeShare, currentQuestion, token }) => {
   const [name, setName] = useState("")
 
   useEffect(() => {
-    //console.log(currentQuestion.mentiOptions)
     if (currentQuestion && currentQuestion.mentiOptions.length) {
       setName(currentQuestion.mentiOptions[0].name)
     }
@@ -111,7 +109,6 @@ const Paragraph = ({ codeShare, currentQuestion, token }) => {
         type="text"
         onChange={(ev) => setName(ev.target.value)}
         onBlur={(ev) => handleChangeContent(ev)}
-        //onKeyDown={(ev) => handleEnterEvent(ev)}
         placeholder={name}
         value={name}
         name={name}
@@ -125,7 +122,6 @@ const Paragraph = ({ codeShare, currentQuestion, token }) => {
 const DisplaySpecificOption = ({
   currentQuestion,
   addNewOption,
-  //handleChangeOptionName,
   deleteOption,
   saveNewOptionName,
   codeShare,
@@ -178,14 +174,12 @@ const RightBar = ({
   slides,
   currentQuestion,
   addNewOption,
-  //handleChangeOptionName,
   saveQuestion,
   deleteOption,
   saveNewOptionName,
   codeShare,
   token,
 }) => {
-  //const [loading, isLoading] = useState(false)
   const [name, setName] = useState("")
 
   useEffect(() => {
@@ -206,51 +200,47 @@ const RightBar = ({
   }
 
   return (
-    <Box flex="1">
-      {currentQuestion ? (
-        <Container>
-          <FormControl>
-            <FormLabel w={"300px"}>Slide type</FormLabel>
-            <Text>{currentQuestion.slide.nombre}</Text>
-            {/*<Select
-              name="slides"
-              options={slides}
-              placeholder="Select slide type."
-              closeMenuOnSelect={true}
-              hasStickyGroupHeaders
-              defaultValue={slides[0].options[0].value}
-              value={currentQuestion.question}
-      />*/}
-          </FormControl>
-          <FormControl>
-            <FormLabel w={"300px"}>Tu pregunta</FormLabel>
-            <Input
-              id={currentQuestion.id}
-              type="text"
-              onChange={(ev) => handleChangeName(ev)}
-              onBlur={(ev) => saveQuestion(ev, name)}
-              onKeyDown={(ev) => handleEnterEvent(ev)}
-              placeholder={name}
-              value={name}
-              name={name}
-            />
-          </FormControl>
-
-          <FormControl>
-            <Flex margin={3}>
-              <DisplaySpecificOption
-                currentQuestion={currentQuestion}
-                addNewOption={addNewOption}
-                //handleChangeOptionName={handleChangeOptionName}
-                deleteOption={deleteOption}
-                saveNewOptionName={saveNewOptionName}
-                codeShare={codeShare}
-                token={token}
+    <Box width={"35%"}>
+      <Container>
+        {currentQuestion ? (
+          <Box flex="1">
+            <FormControl>
+              <FormLabel w={"300px"}>
+                <Flex flexDir="row" gap={"2"}>
+                  Tipo de slide:
+                  <Text>{currentQuestion.slide.nombre}</Text>
+                </Flex>
+              </FormLabel>
+            </FormControl>
+            <FormControl>
+              <FormLabel w={"300px"}>Tu pregunta</FormLabel>
+              <Input
+                id={currentQuestion.id}
+                type="text"
+                onChange={(ev) => handleChangeName(ev)}
+                onBlur={(ev) => saveQuestion(ev, name)}
+                onKeyDown={(ev) => handleEnterEvent(ev)}
+                placeholder={name}
+                value={name}
+                name={name}
               />
-            </Flex>
-          </FormControl>
-        </Container>
-      ) : null}
+            </FormControl>
+
+            <FormControl>
+              <Flex margin={3}>
+                <DisplaySpecificOption
+                  currentQuestion={currentQuestion}
+                  addNewOption={addNewOption}
+                  deleteOption={deleteOption}
+                  saveNewOptionName={saveNewOptionName}
+                  codeShare={codeShare}
+                  token={token}
+                />
+              </Flex>
+            </FormControl>
+          </Box>
+        ) : null}
+      </Container>
     </Box>
   )
 }
@@ -276,7 +266,7 @@ const NewSlideDrawer = ({ newSlide, slides }) => {
   return (
     <>
       <CustomButton
-        colorScheme={"messenger"}
+        colorScheme={"blue"}
         icon={HiPlus}
         text="Nueva slide"
         onClick={onOpen}
@@ -374,11 +364,6 @@ const EditPresentation = () => {
     if (!form) {
       fetchFormByCode(code, token)
     }
-
-    //if(form && !loading){
-    //    fetchQuestionsFormByFormId();
-    //    fetchAnswerQuestion();
-    //}
   }, [form])
 
   const fetchAnswerQuestion = () => {
@@ -466,15 +451,6 @@ const EditPresentation = () => {
     }
   }
 
-  /*const handleChangeOptionName = (ev, name, id) => {
-    ev.preventDefault()
-    const newCurrent = currentQuestion.mentiOptions.forEach((option) => {
-      if (option.id == id) {
-        option.name = name
-      }
-    })
-  }*/
-
   const saveQuestion = (ev, newQuestionName) => {
     ev.preventDefault()
     isLoading(true)
@@ -536,14 +512,15 @@ const EditPresentation = () => {
             currentQuestion={currentQuestion}
             addNewOption={addNewOption}
             setCurrentQuestion={setCurrentQuestion}
-            //handleChangeOptionName={handleChangeOptionName}
             saveQuestion={saveQuestion}
             deleteOption={deleteOption}
             saveNewOptionName={saveNewOptionName}
             codeShare={form.codeShare}
             token={token}
           />
-        ) : null}
+        ) : (
+          <RightBar currentQuestion={currentQuestion} />
+        )}
       </Flex>
     </Flex>
   )

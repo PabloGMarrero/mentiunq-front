@@ -15,7 +15,7 @@ import { AiOutlineQuestionCircle } from "react-icons/ai"
 import { HiOutlineArrowLeft } from "react-icons/hi"
 
 import { GoogleLogin } from "react-google-login"
-//import { config } from "../../config"
+import { config } from "../../config"
 import { useEffect } from "react"
 import { gapi } from "gapi-script"
 import { useAuth } from "../contexts/auth-context"
@@ -64,7 +64,7 @@ const TopNavbar = () => {
   useEffect(() => {
     gapi.load("client:auth2", () => {
       gapi.client.init({
-        clientId: import.meta.env.VITE_APP_GOOGLE_CLIENTID,
+        clientId: config.GOOGLE_OAUTH_CLIENTID,
         plugin_name: "ProductManager credential",
         scope: "email",
       })

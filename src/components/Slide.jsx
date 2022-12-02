@@ -17,7 +17,9 @@ const Slide = ({
     >
       <Box>
         <Flex flexDir={"column"} alignItems="center">
-          <Icon as={MdPlayArrow} color={"#319795"} w={6} h={6} />
+          {question.isCurrent ? (
+            <Icon as={MdPlayArrow} color={"#319795"} w={6} h={6} />
+          ) : null}
           <IconButton
             icon={<BsTrash />}
             color={"#333"}
@@ -33,7 +35,7 @@ const Slide = ({
         m={2}
         justifyContent={"center"}
         w="150px"
-        borderWidth="1px"
+        borderWidth={question.isCurrent ? "4px" : "1px"}
         rounded="xs"
         h="100px"
       >
