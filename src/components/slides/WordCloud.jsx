@@ -31,7 +31,12 @@ const WordCloud = ({ question }) => {
 
   return (
     <Flex flexDir="column" margin={"50px"}>
-      <Text textAlign={"center"} fontSize="5xl" as="b">
+      <Text
+        textAlign={"center"}
+        fontSize="5xl"
+        as="b"
+        fontFamily={"MentiText-Regular"}
+      >
         {question.question}
       </Text>
       <Flex margin={"80px"} justifyContent={"center"}>

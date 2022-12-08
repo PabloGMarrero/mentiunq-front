@@ -18,7 +18,9 @@ const CustomButton = ({
       isDisabled={isDisabled}
     >
       <Icon as={icon} w={wB} h={hB} />
-      <Text m={1}>{text}</Text>
+      <Text m={1} fontFamily={"MentiText-Regular"}>
+        {text}
+      </Text>
     </Button>
   )
 }

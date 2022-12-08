@@ -18,11 +18,20 @@ const Paragraph = ({ question }) => {
   return (
     <Flex margin={"50px"}>
       <Flex flexDir="column">
-        <Text textAlign={"center"} fontSize="5xl" as="b">
+        <Text
+          textAlign={"center"}
+          fontSize="5xl"
+          as="b"
+          fontFamily={"MentiText-Regular"}
+        >
           {heading}
         </Text>
         <Flex h={"20%"} justifyContent={"center"}>
-          <Text textAlign={"center"} w={"50vh"}>
+          <Text
+            textAlign={"center"}
+            w={"50vh"}
+            fontFamily={"MentiText-Regular"}
+          >
             {paragraph}
           </Text>
         </Flex>
