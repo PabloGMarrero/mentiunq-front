@@ -148,6 +148,23 @@ const Voting = () => {
     )
   }
 
+  const NoVoting = () => {
+    return (
+      <Box width={"100%"}>
+        <Flex
+          w="100%"
+          justifyContent="center"
+          fontWeight="semibold"
+          fontSize="xl"
+        >
+          <Text as="h3" size="lg">
+            Espere que el/la presentador/a llegue a una diapostiva para votar
+          </Text>
+        </Flex>
+      </Box>
+    )
+  }
+
   const DisplayPerSlideType = ({ slideType }) => {
     switch (slideType) {
       case "Abierta":
@@ -155,7 +172,7 @@ const Voting = () => {
       case "Cerrada":
         return <VotingClose />
       default:
-        return null
+        return <NoVoting />
     }
   }
 

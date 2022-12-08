@@ -1,7 +1,10 @@
 import { Button, Flex, Square } from "@chakra-ui/react"
 import { useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
-import { getFormByCode } from "../services/form-service"
+import {
+  getFormByCode,
+  updateNewCurrentQuestion,
+} from "../services/form-service"
 import { parsePayload } from "../utils/parse-payload"
 import PptComponent from "../components/PptComponent"
 import CustomButton from "../components/CustomButton"
@@ -14,6 +17,7 @@ const Presentation = () => {
   const [question, setCurrentQuestion] = useState(null)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [length, setLength] = useState(null)
+  const [formId, setFormId] = useState(null)
 
   useEffect(() => {
     if (!question) {
@@ -26,7 +30,10 @@ const Presentation = () => {
   const fetchQuestionsFormByFormId = () => {
     getFormByCode(code, token)
       .then((resp) => {
-        setQuestions(parsePayload(resp).questions)
+        const form = parsePayload(resp)
+
+        setFormId(form.id)
+        setQuestions(form.questions)
         setCurrentQuestion(questions[0])
       })
       .catch((err) => console.log(err))
@@ -45,8 +52,19 @@ const Presentation = () => {
   }
 
   const handleCurrentQuestion = () => {
-    setCurrentQuestion(questions[currentIndex])
-    //llamar a updatecurrentQuestionId
+    if (!question) {
+      return
+    }
+    const _question = questions[currentIndex]
+
+    setCurrentQuestion(_question)
+    updateCurrentQuestion(_question.id)
+  }
+
+  const updateCurrentQuestion = (questionId) => {
+    updateNewCurrentQuestion(questionId, formId, token)
+      .then((resp) => {})
+      .catch((err) => console.log(err))
   }
 
   const LeftButton = () => {
@@ -54,7 +72,7 @@ const Presentation = () => {
       <CustomButton
         text={"prev"}
         icon={GrLinkPrevious}
-        colorScheme={"blue"}
+        colorScheme="blue"
         onClick={(ev) => handlePrev(ev)}
       />
     )
@@ -65,7 +83,7 @@ const Presentation = () => {
       <CustomButton
         text={"next"}
         icon={GrLinkNext}
-        colorScheme={"blue"}
+        color="grey.200"
         onClick={(ev) => handleNext(ev)}
       />
     )
