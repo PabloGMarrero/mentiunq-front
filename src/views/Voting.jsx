@@ -119,14 +119,16 @@ const Voting = () => {
           </Flex>
         </Flex>
         <Flex w="100%" justifyContent="center">
-          <Button
-            colorScheme="blue"
-            variant="solid"
-            width={"40%"}
-            onClick={() => handleVote()}
-          >
-            Votar
-          </Button>
+          {question.mentiOptions && question.mentiOptions.length > 0 ? (
+            <Button
+              colorScheme="blue"
+              variant="solid"
+              width={"40%"}
+              onClick={() => handleVote()}
+            >
+              Votar
+            </Button>
+          ) : null}
         </Flex>
       </Flex>
     )
