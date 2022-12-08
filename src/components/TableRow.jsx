@@ -10,7 +10,8 @@ import {
   IconButton,
   Flex,
   Text,
-  propNames,
+  Icon,
+  useToast,
 } from "@chakra-ui/react"
 import { Link as ReachLink } from "react-router-dom"
 import { useState } from "react"
@@ -21,6 +22,7 @@ import {
   renameFormById,
   duplicateForm,
 } from "../services/form-service"
+import { FiCopy } from "react-icons/fi"
 
 const TableRow = (props) => {
   const [token] = useState(localStorage.getItem("accessToken"))
@@ -68,36 +70,45 @@ const TableRow = (props) => {
       .catch((err) => console.log(err))
   }
 
+  const handleCopy = (handleToast) => {
+    navigator.clipboard.writeText(generateLink())
+    handleToast()
+  }
+
+  const generateLink = () => {
+    return (
+      window.location.href.slice(0, window.location.href.lastIndexOf("/")) +
+      "/" +
+      props.form.codeShare
+    )
+  }
+
   const renderShare = () => {
+    const toast = useToast()
+
+    const handleToast = () => {
+      return toast({
+        title: "Copied.",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      })
+    }
+
     return (
       <>
         <Flex bg="white" justifyContent="left" flexDir={"column"} gap={"10px"}>
           <Flex flexDir={"column"}>
             <Flex gap={"5px"}>
               <Text as="b">Copiar link de votación:</Text>
+              <Icon as={FiCopy} onClick={(ev) => handleCopy(handleToast)} />
             </Flex>
-            <Flex gap={"5px"}>
-              {window.location.href.slice(
-                0,
-                window.location.href.lastIndexOf("/"),
-              ) +
-                "/" +
-                props.form.codeShare}
-            </Flex>
+            <Flex gap={"5px"}>{generateLink()}</Flex>
           </Flex>
           <Flex gap={"5px"}>
             <Text as="b">Código QR:</Text>
           </Flex>
-          <QRCode
-            value={
-              window.location.href.slice(
-                0,
-                window.location.href.lastIndexOf("/"),
-              ) +
-              "/" +
-              props.form.codeShare
-            }
-          />
+          <QRCode value={generateLink()} />
         </Flex>
       </>
     )
