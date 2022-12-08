@@ -123,7 +123,6 @@ const TableRow = (props) => {
           </MenuButton>
           <MenuList>
             <MenuItem
-              isDisabled
               as={ReachLink}
               to={"/app/presentation/" + props.form.code + "/"}
             >

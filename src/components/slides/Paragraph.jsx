@@ -21,8 +21,10 @@ const Paragraph = ({ question }) => {
         <Text textAlign={"center"} fontSize="5xl" as="b">
           {heading}
         </Text>
-        <Flex h={"20%"} margin={"100px"}>
-          <Text>{paragraph}</Text>
+        <Flex h={"20%"} justifyContent={"center"}>
+          <Text textAlign={"center"} w={"50vh"}>
+            {paragraph}
+          </Text>
         </Flex>
       </Flex>
     </Flex>

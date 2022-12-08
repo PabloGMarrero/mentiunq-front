@@ -1,12 +1,4 @@
-import {
-  Text,
-  Stack,
-  VStack,
-  Box,
-  Heading,
-  RadioGroup,
-  Flex,
-} from "@chakra-ui/react"
+import { Text, Stack, VStack, Box, Heading, Flex } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { parsePayload } from "../utils/parse-payload"
