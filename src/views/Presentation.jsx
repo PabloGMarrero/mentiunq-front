@@ -9,6 +9,7 @@ import { parsePayload } from "../utils/parse-payload"
 import PptComponent from "../components/PptComponent"
 import CustomButton from "../components/CustomButton"
 import { GrLinkPrevious, GrLinkNext } from "react-icons/gr"
+import Navbar from "./Navbar"
 
 const Presentation = () => {
   const [token] = useState(localStorage.getItem("accessToken"))
@@ -90,16 +91,19 @@ const Presentation = () => {
   }
 
   return (
-    <Flex bg="white" w="100vh" h={"80%"} justifyContent="center" flex={1}>
-      {question ? (
-        <Flex w="750px">
-          {currentIndex > 0 && <LeftButton />}
+    <Flex flexDir="column" flex={1}>
+      <Navbar />
+      <Flex bg="white" h={"80%"} justifyContent="center">
+        {question ? (
+          <Flex w="750px">
+            {currentIndex > 0 && <LeftButton />}
 
-          <PptComponent key={question.id} currentQuestion={question} />
+            <PptComponent key={question.id} currentQuestion={question} />
 
-          {currentIndex < length - 1 && <RightButton />}
-        </Flex>
-      ) : null}
+            {currentIndex < length - 1 && <RightButton />}
+          </Flex>
+        ) : null}
+      </Flex>
     </Flex>
   )
 }

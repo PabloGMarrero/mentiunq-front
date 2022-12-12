@@ -1,6 +1,6 @@
 @font-face {
     font-family: "MentiText-Regular";
-    src: url('../public/fonts/MentiText-Regular.woff');
+    src: url('/fonts/MentiText-Regular.woff');
     font-weight: normal;
     font-style: normal;
   }
