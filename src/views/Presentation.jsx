@@ -71,9 +71,9 @@ const Presentation = () => {
   const LeftButton = () => {
     return (
       <CustomButton
-        text={"prev"}
+        text={"Anterior"}
         icon={GrLinkPrevious}
-        colorScheme="blue"
+        color="grey.200"
         onClick={(ev) => handlePrev(ev)}
       />
     )
@@ -82,7 +82,7 @@ const Presentation = () => {
   const RightButton = () => {
     return (
       <CustomButton
-        text={"next"}
+        text={"Siguiente"}
         icon={GrLinkNext}
         color="grey.200"
         onClick={(ev) => handleNext(ev)}
@@ -95,12 +95,14 @@ const Presentation = () => {
       <Navbar />
       <Flex bg="white" h={"80%"} justifyContent="center">
         {question ? (
-          <Flex w="750px">
-            {currentIndex > 0 && <LeftButton />}
-
-            <PptComponent key={question.id} currentQuestion={question} />
-
-            {currentIndex < length - 1 && <RightButton />}
+          <Flex flexDir="column">
+            <Flex w="750px" h="800px" marginTop={5}>
+              <PptComponent key={question.id} currentQuestion={question} />
+            </Flex>
+            <Flex flexDir="row" justifyContent="space-between">
+              <Flex>{currentIndex > 0 && <LeftButton />}</Flex>
+              <Flex>{currentIndex < length - 1 && <RightButton />}</Flex>
+            </Flex>
           </Flex>
         ) : null}
       </Flex>

@@ -67,7 +67,7 @@ const Ranking = ({ question }) => {
 
   return (
     <Flex flexDir="column" paddingLeft={"10px"}>
-      <Text fontSize="5xl" as="b" fontFamily={"MentiText-Regular"}>
+      <Text fontSize="5xl" as="b">
         {question.question}
       </Text>
       <Bar
