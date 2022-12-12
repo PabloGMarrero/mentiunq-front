@@ -114,6 +114,7 @@ const Paragraph = ({ codeShare, currentQuestion, token }) => {
         name={name}
         h={"50vh"}
         w={"30vh"}
+        fontFamily={"MentiText-Regular"}
       />
     </Flex>
   )
@@ -493,7 +494,7 @@ const EditPresentation = () => {
   }
 
   return (
-    <Flex flexDir="column" w="100%">
+    <Flex flexDir="column" w="100%" fontFamily={"MentiText-Regular"}>
       <Navbar />
       <BottomNavbar slides={slides} newSlide={handleCreateNewSlide} />
       <Flex flexDir="row" paddingTop={5} h={"80vh"}>

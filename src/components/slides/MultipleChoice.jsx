@@ -49,7 +49,12 @@ const MultipleChoice = ({ question }) => {
 
   return (
     <Flex flexDir="column">
-      <Text textAlign={"center"} fontSize="5xl" as="b">
+      <Text
+        textAlign={"center"}
+        fontSize="5xl"
+        as="b"
+        fontFamily={"MentiText-Regular"}
+      >
         {question.question}
       </Text>
       <Bar ref={ref} width={600} height={600} data={dataTemplate} />

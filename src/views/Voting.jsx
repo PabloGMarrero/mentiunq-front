@@ -119,14 +119,16 @@ const Voting = () => {
           </Flex>
         </Flex>
         <Flex w="100%" justifyContent="center">
-          <Button
-            colorScheme="blue"
-            variant="solid"
-            width={"40%"}
-            onClick={() => handleVote()}
-          >
-            Votar
-          </Button>
+          {question.mentiOptions && question.mentiOptions.length > 0 ? (
+            <Button
+              colorScheme="blue"
+              variant="solid"
+              width={"40%"}
+              onClick={() => handleVote()}
+            >
+              Votar
+            </Button>
+          ) : null}
         </Flex>
       </Flex>
     )
@@ -148,6 +150,23 @@ const Voting = () => {
     )
   }
 
+  const NoVoting = () => {
+    return (
+      <Box width={"100%"}>
+        <Flex
+          w="100%"
+          justifyContent="center"
+          fontWeight="semibold"
+          fontSize="xl"
+        >
+          <Text as="h3" size="lg">
+            Espere que el/la presentador/a llegue a una diapostiva para votar
+          </Text>
+        </Flex>
+      </Box>
+    )
+  }
+
   const DisplayPerSlideType = ({ slideType }) => {
     switch (slideType) {
       case "Abierta":
@@ -155,7 +174,7 @@ const Voting = () => {
       case "Cerrada":
         return <VotingClose />
       default:
-        return null
+        return <NoVoting />
     }
   }
 

@@ -32,6 +32,7 @@ const Option = ({
         value={name}
         name={name}
         onBlur={(ev) => saveNewOptionName(ev, id, name)}
+        fontFamily={"MentiText-Regular"}
       />
       <IconButton
         icon={<BsTrash />}
