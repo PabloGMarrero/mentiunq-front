@@ -117,6 +117,14 @@ const duplicateForm = (formId, token) => {
   )
 }
 
+const endPresentation = (formId, token) => {
+  return axios.patch(
+    API_URL + "/endform/" + formId,
+    {},
+    createGenericConfig(token),
+  )
+}
+
 export {
   createForm,
   createQuestion,
@@ -133,4 +141,5 @@ export {
   updateOptionName,
   updateContent,
   duplicateForm,
+  endPresentation,
 }

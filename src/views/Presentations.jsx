@@ -113,8 +113,8 @@ const MainContent = () => {
                   <Tr>
                     <Th>Nombre</Th>
                     <Th>Código Cooperativo</Th>
-                    <Th>Modificado</Th>
                     <Th>Creado</Th>
+                    <Th>Finalizado</Th>
                   </Tr>
                 </Thead>
                 <Tbody>

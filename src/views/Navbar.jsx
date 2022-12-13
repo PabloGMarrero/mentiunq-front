@@ -64,7 +64,7 @@ const TopNavbar = () => {
   useEffect(() => {
     gapi.load("client:auth2", () => {
       gapi.client.init({
-        clientId: config.GOOGLE_OAUTH_CLIENTID,
+        clientId: import.meta.env.VITE_APP_GOOGLE_CLIENTID,
         plugin_name: "ProductManager credential",
         scope: "email",
       })
@@ -86,14 +86,6 @@ const TopNavbar = () => {
         </Text>
       </Flex>
       <Flex flexDir="row" gap={2} alignItems="center">
-        <Flex alignItems="center">
-          <Icon as={BsCheck} color={"#48BB78"} w={6} h={6} />
-          <Text fontSize="12px" fontWeight={300}>
-            Saved
-          </Text>
-        </Flex>
-        <Divider orientation="vertical" />
-        <Icon as={AiOutlineQuestionCircle} w={6} h={6} />
         <Divider orientation="vertical" />
 
         {authed ? (
