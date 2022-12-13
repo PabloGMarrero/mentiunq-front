@@ -125,6 +125,13 @@ const endPresentation = (formId, token) => {
   )
 }
 
+const getFormByCodeShare = (codeShare, token) => {
+  return axios.get(
+    API_URL + "/formCode/" + codeShare,
+    createGenericConfig(token),
+  )
+}
+
 export {
   createForm,
   createQuestion,
@@ -142,4 +149,5 @@ export {
   updateContent,
   duplicateForm,
   endPresentation,
+  getFormByCodeShare,
 }

@@ -17,6 +17,7 @@ import { useParams } from "react-router-dom"
 import { parsePayload } from "../utils/parse-payload"
 import QuestionOption from "../components/QuestionOption"
 import Title from "../views/Title"
+import { getFormByCodeShare } from "../services/form-service"
 
 const Voting = () => {
   const [question, setQuestion] = useState({})
@@ -25,15 +26,25 @@ const Voting = () => {
   const [alreadyVoted, setAlreadyVoted] = useState(false)
   const [notFound, setNotFound] = useState(false)
   const [value, setValue] = useState("1")
+  const [form, setForm] = useState(null)
+  const [token] = useState(localStorage.getItem("accessToken"))
 
   useEffect(() => {
     getVotingQuestion(codeShare)
       .then((resp) => {
         setQuestion(parsePayload(resp))
         setNotFound(false)
+
+        if (!form) {
+          getFormByCodeShare(codeShare, token)
+            .then((resp) => {
+              setForm(parsePayload(resp))
+            })
+            .catch((err) => setNotFound(true))
+        }
       })
       .catch((err) => setNotFound(true))
-  }, [])
+  }, [form])
 
   const handleVote = () => {
     if (localStorage.getItem("alreadyVoted" + question.id)) {
@@ -205,6 +216,22 @@ const Voting = () => {
           fontSize="xl"
         >
           <Flex gap="15px">Ya participaste en esta votación</Flex>
+        </Flex>
+      </Box>
+    )
+  }
+
+  if (form && form.ended) {
+    return (
+      <Box width={"100%"} flex={1}>
+        <Title />
+        <Flex
+          w="100%"
+          justifyContent="center"
+          fontWeight="semibold"
+          fontSize="xl"
+        >
+          <Flex gap="15px">El formulario se encuentra finalizado</Flex>
         </Flex>
       </Box>
     )
