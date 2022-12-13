@@ -441,6 +441,7 @@ const EditPresentation = () => {
         )
 
         setCurrentQuestion(question)
+        setQuestions(form.questions)
       })
       .catch((err) => console.log(err))
     isLoading(false)
