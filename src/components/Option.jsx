@@ -2,19 +2,12 @@ import { useState } from "react"
 import { Flex, Input, IconButton } from "@chakra-ui/react"
 import { BsTrash } from "react-icons/bs"
 
-const Option = ({
-  id,
-  value,
-  //changeOptionName,
-  deleteOption,
-  saveNewOptionName,
-}) => {
+const Option = ({ id, value, deleteOption, saveNewOptionName, ended }) => {
   const [name, setName] = useState(value)
 
   const handleChangeOption = (ev) => {
     ev.preventDefault()
     setName(ev.target.value)
-    //changeOptionName(ev, name, id)
   }
 
   const handleDeleteOption = (ev, id) => {
@@ -33,6 +26,7 @@ const Option = ({
         name={name}
         onBlur={(ev) => saveNewOptionName(ev, id, name)}
         fontFamily={"MentiText-Regular"}
+        isDisabled={ended}
       />
       <IconButton
         icon={<BsTrash />}
@@ -40,6 +34,7 @@ const Option = ({
         w={6}
         h={6}
         onClick={(ev) => handleDeleteOption(ev, id)}
+        isDisabled={ended}
       />
     </Flex>
   )

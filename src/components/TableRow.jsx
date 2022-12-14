@@ -21,6 +21,7 @@ import {
   deleteFormById,
   renameFormById,
   duplicateForm,
+  endPresentation,
 } from "../services/form-service"
 import { FiCopy } from "react-icons/fi"
 
@@ -42,6 +43,10 @@ const TableRow = (props) => {
   const [showDuplicate, setShowDuplicate] = useState(false)
   const handleDuplicateCloseFormShow = () => setShowDuplicate(false)
   const handleDuplicateOpenFormShow = () => setShowDuplicate(true)
+
+  const [showEndPresentation, setEndPresentation] = useState(false)
+  const handleCloseEndPresentation = () => setEndPresentation(false)
+  const handleOpenEndPresentation = () => setEndPresentation(true)
 
   const handleEditFormName = (name) => {
     renameFormById(props.form.id, token, name)
@@ -70,6 +75,15 @@ const TableRow = (props) => {
       .catch((err) => console.log(err))
   }
 
+  const handleEndPresentation = () => {
+    endPresentation(props.form.id, token)
+      .then((resp) => {
+        handleCloseEndPresentation()
+        props.fetch()
+      })
+      .catch((err) => console.log(err))
+  }
+
   const handleCopy = (handleToast) => {
     navigator.clipboard.writeText(generateLink())
     handleToast()
@@ -88,7 +102,7 @@ const TableRow = (props) => {
 
     const handleToast = () => {
       return toast({
-        title: "Copied.",
+        title: "Copiado!",
         status: "success",
         duration: 2000,
         isClosable: true,
@@ -125,8 +139,8 @@ const TableRow = (props) => {
         </Link>
       </Td>
       <Td>{props.form.codeShare}</Td>
-      <Td>{new Date(props.form.updateDate).toLocaleString("es-AR")}</Td>
       <Td>{new Date(props.form.creationDate).toLocaleString("es-AR")}</Td>
+      <Td>{props.form.ended ? "Sí" : "No"}</Td>
       <Td>
         <Menu>
           <MenuButton as={IconButton} aria-label="Options" variant="outline">
@@ -136,22 +150,31 @@ const TableRow = (props) => {
             <MenuItem
               as={ReachLink}
               to={"/app/presentation/" + props.form.code + "/"}
+              isDisabled={props.form.ended}
             >
               Presentar
             </MenuItem>
+
             <MenuItem
               as={ReachLink}
               to={"/app/results/" + props.form.code + "/"}
             >
               Ver resultados
             </MenuItem>
-            <MenuItem onClick={handleOpenShowShare}>Compartir</MenuItem>
+
+            <MenuItem
+              onClick={handleOpenShowShare}
+              isDisabled={props.form.ended}
+            >
+              Compartir
+            </MenuItem>
             <ModalWindow
               show={showShare}
               onClose={handleCloseShowShare}
               header={"Compartir"}
               message={renderShare()}
             ></ModalWindow>
+
             <MenuItem onClick={handleDuplicateOpenFormShow}>
               Duplicar presentación
             </MenuItem>
@@ -164,6 +187,22 @@ const TableRow = (props) => {
               acceptFunc={handleDuplicateForm}
             ></ModalWindow>
             <MenuDivider />
+
+            <MenuItem
+              onClick={handleOpenEndPresentation}
+              isDisabled={props.form.ended}
+            >
+              Finalizar presentación
+            </MenuItem>
+            <ModalWindow
+              show={showEndPresentation}
+              onClose={handleCloseEndPresentation}
+              header={"Terminar"}
+              message={"¿Desea finalizar el formulario?"}
+              renderFormat={"question"}
+              acceptFunc={handleEndPresentation}
+            ></ModalWindow>
+
             <MenuItem onClick={handleOpenShowRename}>Renombrar</MenuItem>
             <ModalWindow
               show={showRename}
@@ -173,7 +212,12 @@ const TableRow = (props) => {
               renderFormat={"input"}
               acceptFunc={handleEditFormName}
             ></ModalWindow>
-            <MenuItem color="red.500" onClick={handleOpenShowDelete}>
+
+            <MenuItem
+              color="red.500"
+              onClick={handleOpenShowDelete}
+              isDisabled={props.form.ended}
+            >
               Borrar
             </MenuItem>
             <ModalWindow

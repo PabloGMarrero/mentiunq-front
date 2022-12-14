@@ -7,6 +7,7 @@ const Slide = ({
   deleteSlide,
   updateCurrentQuestion,
   isBinDisabled,
+  ended,
 }) => {
   return (
     <Flex
@@ -26,7 +27,7 @@ const Slide = ({
             w={6}
             h={6}
             onClick={(ev) => deleteSlide(question.id)}
-            isDisabled={isBinDisabled}
+            isDisabled={isBinDisabled || ended}
           />
         </Flex>
       </Box>

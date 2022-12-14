@@ -44,7 +44,7 @@ import PptComponent from "../components/PptComponent.jsx"
 import { HiPlus } from "react-icons/hi"
 import { useParams } from "react-router-dom"
 
-const LeftBar = ({ questions, deleteSlide, updateCurrentQuestion }) => {
+const LeftBar = ({ questions, deleteSlide, updateCurrentQuestion, ended }) => {
   return (
     <Box width={"25%"}>
       <Flex flexDir="column">
@@ -56,6 +56,7 @@ const LeftBar = ({ questions, deleteSlide, updateCurrentQuestion }) => {
                 deleteSlide={deleteSlide}
                 updateCurrentQuestion={updateCurrentQuestion}
                 isBinDisabled={questions.length < 2}
+                ended={ended}
               />
             ))
           : null}
@@ -82,7 +83,7 @@ const MainContent = ({ currentQuestion, setCurrentQuestion }) => {
   )
 }
 
-const Paragraph = ({ codeShare, currentQuestion, token }) => {
+const Paragraph = ({ codeShare, currentQuestion, token, ended }) => {
   const [name, setName] = useState("")
 
   useEffect(() => {
@@ -115,6 +116,7 @@ const Paragraph = ({ codeShare, currentQuestion, token }) => {
         h={"50vh"}
         w={"30vh"}
         fontFamily={"MentiText-Regular"}
+        isDisabled={ended}
       />
     </Flex>
   )
@@ -127,6 +129,7 @@ const DisplaySpecificOption = ({
   saveNewOptionName,
   codeShare,
   token,
+  ended,
 }) => {
   switch (currentQuestion.slide.nombre) {
     case "Word Cloud":
@@ -142,9 +145,9 @@ const DisplaySpecificOption = ({
                   key={option.id}
                   id={option.id}
                   value={option.name}
-                  //changeOptionName={handleChangeOptionName}
                   deleteOption={deleteOption}
                   saveNewOptionName={saveNewOptionName}
+                  ended={ended}
                 />
               ))
             : null}
@@ -153,6 +156,7 @@ const DisplaySpecificOption = ({
             icon={HiPlus}
             text="Agregá opción"
             onClick={(ev) => addNewOption(ev, currentQuestion.id)}
+            isDisabled={ended}
           />
         </Flex>
       )
@@ -162,6 +166,7 @@ const DisplaySpecificOption = ({
           currentQuestion={currentQuestion}
           codeShare={codeShare}
           token={token}
+          ended={ended}
         />
       )
     case "Open Ended":
@@ -180,6 +185,7 @@ const RightBar = ({
   saveNewOptionName,
   codeShare,
   token,
+  ended,
 }) => {
   const [name, setName] = useState("")
 
@@ -224,6 +230,7 @@ const RightBar = ({
                 placeholder={name}
                 value={name}
                 name={name}
+                disabled={ended}
               />
             </FormControl>
 
@@ -236,6 +243,7 @@ const RightBar = ({
                   saveNewOptionName={saveNewOptionName}
                   codeShare={codeShare}
                   token={token}
+                  ended={ended}
                 />
               </Flex>
             </FormControl>
@@ -246,12 +254,14 @@ const RightBar = ({
   )
 }
 
-const BottomNavbar = ({ newSlide, slides }) => {
+const BottomNavbar = ({ newSlide, slides, ended }) => {
   return (
     <Flex flexDir="column">
       <Flex justifyContent={"space-between"}>
         <Flex flexDir="row" gap={2}>
-          <NewSlideDrawer newSlide={newSlide} slides={slides} />
+          {!ended ? (
+            <NewSlideDrawer newSlide={newSlide} slides={slides} />
+          ) : null}
         </Flex>
       </Flex>
     </Flex>
@@ -431,6 +441,7 @@ const EditPresentation = () => {
         )
 
         setCurrentQuestion(question)
+        setQuestions(form.questions)
       })
       .catch((err) => console.log(err))
     isLoading(false)
@@ -496,33 +507,40 @@ const EditPresentation = () => {
   return (
     <Flex flexDir="column" w="100%" fontFamily={"MentiText-Regular"}>
       <Navbar />
-      <BottomNavbar slides={slides} newSlide={handleCreateNewSlide} />
-      <Flex flexDir="row" paddingTop={5} h={"80vh"}>
-        <LeftBar
-          questions={questions}
-          deleteSlide={deleteSlide}
-          updateCurrentQuestion={updateCurrentQuestion}
-        />
-        <MainContent
-          currentQuestion={currentQuestion}
-          setCurrentQuestion={setCurrentQuestion}
-        />
-        {form ? (
-          <RightBar
+      {form ? (
+        <Flex flexDir="column" w="100%" fontFamily={"MentiText-Regular"}>
+          <BottomNavbar
             slides={slides}
-            currentQuestion={currentQuestion}
-            addNewOption={addNewOption}
-            setCurrentQuestion={setCurrentQuestion}
-            saveQuestion={saveQuestion}
-            deleteOption={deleteOption}
-            saveNewOptionName={saveNewOptionName}
-            codeShare={form.codeShare}
-            token={token}
+            newSlide={handleCreateNewSlide}
+            ended={form.ended}
           />
-        ) : (
-          <RightBar currentQuestion={currentQuestion} />
-        )}
-      </Flex>
+
+          <Flex flexDir="row" paddingTop={5} h={"80vh"}>
+            <LeftBar
+              questions={questions}
+              deleteSlide={deleteSlide}
+              updateCurrentQuestion={updateCurrentQuestion}
+              ended={form.ended}
+            />
+            <MainContent
+              currentQuestion={currentQuestion}
+              setCurrentQuestion={setCurrentQuestion}
+            />
+            <RightBar
+              slides={slides}
+              currentQuestion={currentQuestion}
+              addNewOption={addNewOption}
+              setCurrentQuestion={setCurrentQuestion}
+              saveQuestion={saveQuestion}
+              deleteOption={deleteOption}
+              saveNewOptionName={saveNewOptionName}
+              codeShare={form.codeShare}
+              token={token}
+              ended={form.ended}
+            />
+          </Flex>
+        </Flex>
+      ) : null}
     </Flex>
   )
 }
