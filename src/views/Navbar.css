@@ -1,0 +1,21 @@
+@keyframes wiggle {
+    0%, 25% {
+      transform: translateX(0);
+    }
+    25%, 45% {
+      transform: translateX(-8px);
+    }
+    46%, 65% {
+        transform: translateX(0);
+    }
+    66%, 85% {
+        transform: translateX(8px);
+    }
+    86%, 100% {
+        transform: translateX(0);
+    }
+  }
+
+.animation{
+    animation: wiggle 2s linear infinite;
+}

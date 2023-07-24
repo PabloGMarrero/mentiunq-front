@@ -12,15 +12,35 @@
     "@chakra-ui/react": "^2.3.1",
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
+    "axios": "^0.27.2",
+    "chakra-react-select": "^4.1.4",
+    "chart.js": "^4.0.1",
+    "dotenv": "^16.0.3",
     "framer-motion": "^6.5.1",
+    "gapi-script": "^1.2.0",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.0.1",
+    "react-charts": "^3.0.0-beta.50",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.3.0"
+    "react-google-login": "^5.2.2",
+    "react-icons": "^4.4.0",
+    "react-qr-code": "^2.0.8",
+    "react-router-dom": "^6.3.0",
+    "react-tagcloud": "^2.3.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^2.0.1",
+    "eslint": "^8.28.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.5.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.31.11",
+    "prettier": "^2.7.1",
     "vite": "^3.0.7"
   }
 }

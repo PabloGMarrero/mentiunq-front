@@ -1,3 +1,6 @@
-:root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-}
+@font-face {
+    font-family: "MentiText-Regular";
+    src: url('/fonts/MentiText-Regular.woff');
+    font-weight: normal;
+    font-style: normal;
+  }
