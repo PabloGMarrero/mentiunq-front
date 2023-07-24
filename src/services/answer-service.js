@@ -39,4 +39,14 @@ const addResponse = (codeShare, questionId, response) => {
   )
 }
 
-export { getQuestionByCodeShare, getVotingQuestion, vote, addResponse }
+const getFormByCodeShare = (formCodeShare) => {
+  return axios.get(API_URL + "/formCode/" + formCodeShare)
+}
+
+export {
+  getQuestionByCodeShare,
+  getVotingQuestion,
+  vote,
+  addResponse,
+  getFormByCodeShare,
+}

@@ -11,13 +11,13 @@ import {
   getVotingQuestion,
   vote,
   addResponse,
+  getFormByCodeShare,
 } from "../services/answer-service"
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { parsePayload } from "../utils/parse-payload"
 import QuestionOption from "../components/QuestionOption"
 import Title from "../views/Title"
-import { getFormByCodeShare } from "../services/form-service"
 
 const Voting = () => {
   const [question, setQuestion] = useState({})
@@ -36,7 +36,7 @@ const Voting = () => {
         setNotFound(false)
 
         if (!form) {
-          getFormByCodeShare(codeShare, token)
+          getFormByCodeShare(codeShare)
             .then((resp) => {
               setForm(parsePayload(resp))
             })
